@@ -337,7 +337,7 @@ namespace Boostana
             {
                     Q.Cast();
             }
-            if (TristanaMenu.comboW() && W.IsReady() && Target.IsValidTarget(W.Range) && Target.Health + Target.AttackShield + TristanaMenu.comboW3() < Player.GetSpellDamage(Target, SpellSlot.W, DamageLibrary.SpellStages.Default) && Target.Position.CountEnemiesInRange(800) <= TristanaMenu.comboW1() && Tawah == null)
+            if (TristanaMenu.comboW() && W.IsReady() && Target.IsValidTarget(W.Range) && Target.Position.CountEnemiesInRange(800) <= TristanaMenu.comboW1() && Tawah == null)
             {
                 W.Cast(Target.Position);
             }
