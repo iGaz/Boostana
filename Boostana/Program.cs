@@ -9,6 +9,7 @@ using Color = System.Drawing.Color;
 using System;
 using System.Linq;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Boostana
 {
@@ -26,6 +27,23 @@ namespace Boostana
         public static Spell.Skillshot W;
         public static Spell.Targeted E;
         public static Spell.Targeted R;
+        public static Obj_AI_Base AllyTarget;
+        public static AIHeroClient EnemyTarget;
+        public static Vector3 InsecPos;
+        public static bool InsecActive;
+        public static bool WtfSecActive;
+        public static long LastUpdate;
+        public static bool ShouldFlash;
+
+        public static AIHeroClient InsecTarget
+        {
+            get { return EnemyTarget; }
+        }
+
+        private static AIHeroClient _Player
+        {
+            get { return ObjectManager.Player; }
+        }
         internal static void Main(string[] args)
         {
             Loading.OnLoadingComplete += OnLoadingComplete;
@@ -69,6 +87,15 @@ namespace Boostana
         public static void GameOnDraw(EventArgs args)
         {
             if (TristanaMenu.nodraw()) return;
+
+            if (InsecTarget.IsValidTarget())
+            {
+                Circle.Draw(SharpDX.Color.Red, InsecTarget.BoundingRadius + 100, InsecTarget.Position);
+            }
+            if (AllyTarget.IsValidTarget())
+            {
+                Circle.Draw(SharpDX.Color.BlueViolet, AllyTarget.BoundingRadius + 100, AllyTarget.Position);
+            }
 
             if (!TristanaMenu.onlyReady())
             {
@@ -193,6 +220,11 @@ namespace Boostana
         }
         private static void GameOnTick(EventArgs args)
         {
+            if (!InsecActive || LastUpdate + 200 <= Environment.TickCount)
+            {
+                InsecPos = new Vector3();
+            }
+
             if (TristanaMenu.lvlup()) LevelUpSpells();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)) OnCombo();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)) OnHarrass();
@@ -200,12 +232,121 @@ namespace Boostana
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) OnJungle();
             if (TristanaMenu.MyCombo["combo.WR"].Cast<KeyBind>().CurrentValue)
             {
-                //Insec();
+                Insec();
             }
             KillSteal();
             AutoE();
 
         }
+        private static Vector3 InterceptionPoint(List<Obj_AI_Base> heroes)
+        {
+            var result = new Vector3();
+            result = heroes.Aggregate(result, (current, hero) => current + hero.Position);
+            result.X /= heroes.Count;
+            result.Y /= heroes.Count;
+            return result;
+        }
+
+        public static AIHeroClient GetTargetForInsec()
+        {
+            return TargetSelector.GetTarget(1400, DamageType.Physical);
+        }
+
+        public static Vector3 GetBestInsecPos()
+        {
+            switch (TristanaMenu.MyCombo["insecPositionMode"].Cast<Slider>().CurrentValue)
+            {
+                case 0:
+                    var b =
+                        ObjectManager.Get<Obj_AI_Base>()
+                            .Where(
+                                a =>
+                                    (a is AIHeroClient || a is Obj_AI_Turret) && a.IsAlly &&
+                                    a.Distance(InsecTarget.Position) < 2000 && !a.IsMe && a.Health > 0).ToList();
+
+                    return b.Any() ? InterceptionPoint(b.ToList()) : Game.CursorPos;
+                case 1:
+                    return Game.CursorPos;
+                case 2:
+                    return AllyTarget.Position;
+            }
+            return new Vector3();
+        }
+        
+
+        //Getting insec Target with Clicks
+        private static void Game_OnWndProc(WndEventArgs args)
+        {
+            if (args.Msg != 0x202) return;
+            var enemyT =
+            EntityManager.Heroes.Enemies
+                .Where(
+                    a =>
+                        a.IsValid && a.Health > 0 && (a.IsEnemy) && a.Distance(Game.CursorPos) < 200)
+                .ToList()
+                .OrderBy(a => a.Distance(Game.CursorPos))
+                .FirstOrDefault();
+
+            if (enemyT != null)
+            {
+                EnemyTarget = enemyT;
+                return;
+            }
+
+            var allyT =
+                ObjectManager.Get<Obj_AI_Base>()
+                    .Where(
+                        a =>
+                            a.IsValid && a.Health > 0 && (a.IsAlly) && a.Distance(Game.CursorPos) < 200 &&
+                            (a is AIHeroClient || a is Obj_AI_Minion || a is Obj_AI_Turret) && !a.IsMe)
+                    .ToList()
+                    .OrderBy(a => a.Distance(Game.CursorPos))
+                    .FirstOrDefault();
+            if (allyT != null && TristanaMenu.MyCombo["insecPositionMode"].Cast<Slider>().CurrentValue == 2)
+            {
+                AllyTarget = allyT;
+                return;
+            }
+
+            AllyTarget = null;
+            EnemyTarget = null;
+        }
+    
+
+        public static void Insec()
+        {
+            var target = EnemyTarget;
+
+            Orbwalker.OrbwalkTo(TristanaMenu.MyCombo["insecPositionMode"].Cast<Slider>().CurrentValue == 1 && target != null || GetBestInsecPos() == Game.CursorPos && target != null ? target.Position : Game.CursorPos);
+
+
+            if (target == null || !target.IsValidTarget())
+                return;
+            var allyPos = GetBestInsecPos();
+            if (InsecPos == new Vector3())
+            {
+                var insecPos = allyPos.Extend(target.Position, target.Distance(allyPos) + TristanaMenu.MyCombo["insecDistance"].Cast<Slider>().CurrentValue).To3D();
+                InsecPos = insecPos;
+                LastUpdate = Environment.TickCount;
+            }
+            if (!Program.R.IsReady())
+            {
+                OnCombo();
+                return;
+            }
+
+            if (_Player.Distance(InsecPos) < 200)
+            {
+                Program.R.Cast(target);
+                return;
+            }
+            if(_Player.Distance(InsecPos) > 200)
+            {
+                Program.R.Cast(InsecPos);
+                return;
+            }
+        }
+
         private static void KillSteal()
         {
             foreach (var Target in EntityManager.Heroes.Enemies.Where(hero => hero.IsValidTarget(W.Range) && !hero.IsDead && !hero.IsZombie && hero.HealthPercent <= 25))
@@ -337,7 +478,7 @@ namespace Boostana
             {
                     Q.Cast();
             }
-            if (TristanaMenu.comboW() && W.IsReady() && Target.IsValidTarget(W.Range) && Target.Position.CountEnemiesInRange(800) <= TristanaMenu.comboW1() && Tawah == null)
+            if (TristanaMenu.comboW() && W.IsReady() && Target.IsValidTarget(W.Range) && Target.Health + Target.AttackShield + TristanaMenu.comboW3() < Player.GetSpellDamage(Target, SpellSlot.W, DamageLibrary.SpellStages.Default) && Target.Position.CountEnemiesInRange(800) <= TristanaMenu.comboW1() && Tawah == null)
             {
                 W.Cast(Target.Position);
             }
