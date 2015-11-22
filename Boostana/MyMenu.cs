@@ -76,14 +76,12 @@ namespace Boostana
             MyFarm = MyMenu.AddSubMenu("Lane Clear Settings", "laneclear");
             MyFarm.AddGroupLabel("Lane clear settings:");
             MyFarm.Add("lc.Q", new CheckBox("Use Rapid Fire (Q Spell)"));
-            MyFarm.Add("lc.Q1", new Slider("Min. Minions for Rapid Fire ", 3, 0, 10));
             MyFarm.AddSeparator();
             MyFarm.Add("lc.W", new CheckBox("Use Rocket Jump (W Spell)", false));
             MyFarm.Add("lc.W1", new Slider("Min. Minions for Rocket Jump", 3, 0, 10));
             MyFarm.AddSeparator();
             MyFarm.Add("lc.E", new CheckBox("Use Explosive Charge (E Spell)", false));
             MyFarm.Add("lc.E1", new CheckBox("Use Explosive Charge (E Spell) on Tower", false));
-            MyFarm.Add("lc.E2", new Slider("Min. Minions for Explosive Charge ", 3, 0, 10));
             MyFarm.Add("lc.M", new Slider("Min. Mana for Laneclear Spells %", 30, 0, 100));
             MyFarm.AddSeparator();
             MyFarm.AddGroupLabel("Jungle Settings");
@@ -222,14 +220,6 @@ namespace Boostana
         public static bool lcE1()
         {
             return MyFarm["lc.E1"].Cast<CheckBox>().CurrentValue;
-        }
-        public static float lcE2()
-        {
-            return MyFarm["lc.E2"].Cast<Slider>().CurrentValue;
-        }
-        public static float lcQ1()
-        {
-            return MyFarm["lc.Q1"].Cast<Slider>().CurrentValue;
         }
         public static float lcW1()
         {
