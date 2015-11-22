@@ -383,11 +383,11 @@ namespace Boostana
             var source = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.ServerPosition, Player.AttackRange).OrderByDescending(a => a.MaxHealth).FirstOrDefault();
             var sourceE = EntityManager.MinionsAndMonsters.GetLaneMinions().FirstOrDefault(m => m.IsValidTarget(Player.AttackRange) && m.GetBuffCount("tristanaecharge") > 0);
             if (count == 0) return;
-            if (E.IsReady() && TristanaMenu.lcE() && TristanaMenu.lcE2() <= count && Player.ManaPercent >= TristanaMenu.lcM())
+            if (E.IsReady() && TristanaMenu.lcE() && source.IsValidTarget(E.Range) && Player.ManaPercent >= TristanaMenu.lcM())
             {
                 E.Cast(source);
             }
-             if (Q.IsReady() && TristanaMenu.lcQ() && TristanaMenu.lcQ1() <= count && Player.ManaPercent >= TristanaMenu.lcM())
+             if (Q.IsReady() && TristanaMenu.lcQ() && source.IsValidTarget(Q.Range) && Player.ManaPercent >= TristanaMenu.lcM())
             {
                 Q.Cast();
             }
