@@ -399,7 +399,6 @@ namespace Boostana
             {
                 Orbwalker.ForcedTarget = sourceE;
             }
-            if (Tawah == null) return;
             if (Tawah != null)
             {
 
