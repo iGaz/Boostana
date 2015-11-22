@@ -383,14 +383,9 @@ namespace Boostana
             var source = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.ServerPosition, Player.AttackRange).OrderByDescending(a => a.MaxHealth).FirstOrDefault();
             var sourceE = EntityManager.MinionsAndMonsters.GetLaneMinions().FirstOrDefault(m => m.IsValidTarget(Player.AttackRange) && m.GetBuffCount("tristanaecharge") > 0);
             if (count == 0) return;
-            if (Tawah == null) return;
             if (E.IsReady() && TristanaMenu.lcE() && TristanaMenu.lcE2() <= count && Player.ManaPercent >= TristanaMenu.lcM())
             {
                 E.Cast(source);
-            }
-                        if (sourceE != null)
-            {
-                Orbwalker.ForcedTarget = sourceE;
             }
              if (Q.IsReady() && TristanaMenu.lcQ() && TristanaMenu.lcQ1() <= count && Player.ManaPercent >= TristanaMenu.lcM())
             {
@@ -400,6 +395,11 @@ namespace Boostana
             {
                 W.Cast(source.Position);
             }
+            if (sourceE != null)
+            {
+                Orbwalker.ForcedTarget = sourceE;
+            }
+            if (Tawah == null) return;
             if (Tawah != null)
             {
 
