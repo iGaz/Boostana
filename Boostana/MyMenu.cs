@@ -51,7 +51,7 @@ namespace Boostana
             MyCombo = MyMenu.AddSubMenu("Combo settings", "Combo");
             MyCombo.AddGroupLabel("Combo settings:");
             MyCombo.Add("combo.Q", new CheckBox("Use Rapid Fire (Q Spell)"));
-            MyCombo.Add("combo.W", new CheckBox("Use Rocket Jump (W Spell)"));
+            MyCombo.Add("combo.W", new CheckBox("Use Rocket Jump (W Spell)", false));
             MyCombo.Add("combo.E", new CheckBox("Use Explosive Charge (E Spell)"));
             MyCombo.Add("combo.R", new CheckBox("Use Buster Shot (R Spell)"));
             MyCombo.AddSeparator();
