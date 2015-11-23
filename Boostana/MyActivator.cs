@@ -5,29 +5,29 @@ namespace Boostana
 {
     class MyActivator
     {
-        public static Spell.Targeted ignite;
-        public static Item youmus, botrk, bilgewater;
-        public static Spell.Targeted smite;
-        public static Spell.Active heal;
-        public static void loadSpells()
+        public static Spell.Targeted Ignite;
+        public static Item Youmus, Botrk, Bilgewater;
+        public static Spell.Targeted Smite;
+        public static Spell.Active Heal;
+        public static void LoadSpells()
         {
             if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Summoner1).Name.Contains("smite"))
-                smite = new Spell.Targeted(SpellSlot.Summoner1, 570);
+                Smite = new Spell.Targeted(SpellSlot.Summoner1, 570);
             else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Summoner2).Name.Contains("smite"))
-                smite = new Spell.Targeted(SpellSlot.Summoner2, 570);
+                Smite = new Spell.Targeted(SpellSlot.Summoner2, 570);
 
             if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Summoner1).Name.Contains("dot"))
-                ignite = new Spell.Targeted(SpellSlot.Summoner1, 580);
+                Ignite = new Spell.Targeted(SpellSlot.Summoner1, 580);
             else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Summoner2).Name.Contains("dot"))
-                ignite = new Spell.Targeted(SpellSlot.Summoner2, 580);
+                Ignite = new Spell.Targeted(SpellSlot.Summoner2, 580);
 
             if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Summoner1).Name.Contains("heal"))
-                heal = new Spell.Active(SpellSlot.Summoner1);
+                Heal = new Spell.Active(SpellSlot.Summoner1);
             else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Summoner2).Name.Contains("heal"))
-                heal = new Spell.Active(SpellSlot.Summoner2);
-            youmus = new Item((int)ItemId.Youmuus_Ghostblade);
-            botrk = new Item((int)ItemId.Blade_of_the_Ruined_King);
-            bilgewater = new Item((int)ItemId.Bilgewater_Cutlass);
+                Heal = new Spell.Active(SpellSlot.Summoner2);
+            Youmus = new Item((int)ItemId.Youmuus_Ghostblade);
+            Botrk = new Item((int)ItemId.Blade_of_the_Ruined_King);
+            Bilgewater = new Item((int)ItemId.Bilgewater_Cutlass);
         }
     }
 }
