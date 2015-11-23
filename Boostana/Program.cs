@@ -417,8 +417,6 @@ namespace Boostana
         public static void OnJungle()
         {
             var source = EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.ServerPosition, Q.Range).OrderByDescending(a => a.MaxHealth).FirstOrDefault();
-            var sourceE = EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.ServerPosition, Q.Range).FirstOrDefault(m => m.IsValidTarget(Player.AttackRange) && m.GetBuffCount("tristanaecharge") > 0);
-
             if (Q.IsReady() && TristanaMenu.jungleQ() && source.Distance(Player) <= Q.Range)
             {
                 Q.Cast();
@@ -430,10 +428,6 @@ namespace Boostana
             if (E.IsReady() && TristanaMenu.jungleE() && source.Distance(Player) <= E.Range)
             {
                 E.Cast(source);
-            }
-            if (sourceE != null)
-            {
-                Orbwalker.ForcedTarget = sourceE;
             }
         }
         private static void OnHarrass()
