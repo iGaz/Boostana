@@ -3,10 +3,11 @@ using EloBuddy.SDK.Menu.Values;
 
 namespace Boostana
 {
-    class TristanaMenu
+    internal class TristanaMenu
     {
         public static Menu MyMenu, MyCombo, MyDraw, MyHarass, MyActivator, MySpells, MyFarm, MyOtherFunctions;
-        public static void loadMenu()
+
+        public static void LoadMenu()
         {
             MyTristanaPage();
             MyDrawPage();
@@ -21,7 +22,7 @@ namespace Boostana
         {
             MyMenu = MainMenu.AddMenu("Boostana", "main");
             MyMenu.AddGroupLabel("About this script:");
-            MyMenu.AddLabel(" Boostana - " + Program.version);
+            MyMenu.AddLabel(" Boostana - " + Program.Version);
             MyMenu.AddLabel(" Made by -iRaxe");
             MyMenu.AddSeparator();
             MyMenu.AddGroupLabel("Hotkeys");
@@ -35,12 +36,12 @@ namespace Boostana
             MyDraw = MyMenu.AddSubMenu("Draw  settings", "Draw");
             MyDraw.AddGroupLabel("Draw Settings:");
             MyDraw.Add("nodraw", new CheckBox("No Display Drawing", false));
-            MyDraw.Add("onlyReady", new CheckBox("Display only Ready", true));
+            MyDraw.Add("onlyReady", new CheckBox("Display only Ready"));
             MyDraw.AddSeparator();
-            MyDraw.Add("draw.Q", new CheckBox("Draw Rapid Fire Range (Q Spell)", true));
-            MyDraw.Add("draw.W", new CheckBox("Draw Rocket Jump Range (W Spell)", true));
-            MyDraw.Add("draw.E", new CheckBox("Draw Explosive Charge Range (E Spell)", true));
-            MyDraw.Add("draw.R", new CheckBox("Draw Buster Shot Range (R Spell)", true));
+            MyDraw.Add("draw.Q", new CheckBox("Draw Rapid Fire Range (Q Spell)"));
+            MyDraw.Add("draw.W", new CheckBox("Draw Rocket Jump Range (W Spell)"));
+            MyDraw.Add("draw.E", new CheckBox("Draw Explosive Charge Range (E Spell)"));
+            MyDraw.Add("draw.R", new CheckBox("Draw Buster Shot Range (R Spell)"));
             MyDraw.AddSeparator();
             MyDraw.AddGroupLabel("Pro Tips");
             MyDraw.AddLabel(" - Uncheck the boxeses if you wish to dont see a specific draw");
@@ -63,14 +64,17 @@ namespace Boostana
             MyCombo.Add("combo.W1", new Slider("Max enemies for the Rocket Jump (W Spell)", 3, 0, 5));
             MyCombo.AddSeparator();
             MyCombo.Add("insecPositionMode", new Slider("Insec Postion Mode", 2, 0, 2));
-            MyCombo.Add("insecDistancee", new Slider("Insec Distance", 200,100,350));
+            MyCombo.Add("insecDistancee", new Slider("Insec Distance", 200, 100, 350));
             MyCombo.Add("combo.W3", new Slider("Rocket Jump Overkill", 50, 0, 500));
             MyCombo.AddSeparator();
-            MyCombo.Add("combo.WR", new KeyBind("Use Rocket Jump + Buster Shot for Insec", false, KeyBind.BindTypes.HoldActive, 92));
+            MyCombo.Add("combo.WR",
+                new KeyBind("Use Rocket Jump + Buster Shot for Insec", false, KeyBind.BindTypes.HoldActive, 92));
             MyCombo.AddSeparator();
             MyCombo.AddGroupLabel("Pro Tips");
-            MyCombo.AddLabel(" -Uncheck the boxes if you wish to dont use a specific spell while you are pressing the Combo Key");
+            MyCombo.AddLabel(
+                " -Uncheck the boxes if you wish to dont use a specific spell while you are pressing the Combo Key");
         }
+
         public static void MyFarmPage()
         {
             MyFarm = MyMenu.AddSubMenu("Lane Clear Settings", "laneclear");
@@ -82,7 +86,7 @@ namespace Boostana
             MyFarm.AddSeparator();
             MyFarm.Add("lc.E", new CheckBox("Use Explosive Charge (E Spell)", false));
             MyFarm.Add("lc.E1", new CheckBox("Use Explosive Charge (E Spell) on Tower", false));
-            MyFarm.Add("lc.M", new Slider("Min. Mana for Laneclear Spells %", 30, 0, 100));
+            MyFarm.Add("lc.M", new Slider("Min. Mana for Laneclear Spells %", 30));
             MyFarm.AddSeparator();
             MyFarm.AddGroupLabel("Jungle Settings");
             MyFarm.Add("jungle.Q", new CheckBox("Use Rapid Fire in Jungle (Q Spell)"));
@@ -90,8 +94,10 @@ namespace Boostana
             MyFarm.Add("jungle.E", new CheckBox("Use Explosive Charge in Jungle (E Spell)"));
             MyFarm.AddSeparator();
             MyFarm.AddGroupLabel("Pro Tips");
-            MyFarm.AddLabel(" -Uncheck the boxes if you wish to dont use a specific spell while you are pressing the Jungle/LaneClear Key");
+            MyFarm.AddLabel(
+                " -Uncheck the boxes if you wish to dont use a specific spell while you are pressing the Jungle/LaneClear Key");
         }
+
         public static void MyHarassPage()
         {
             MyHarass = MyMenu.AddSubMenu("Harass/Killsteal Settings", "hksettings");
@@ -99,7 +105,7 @@ namespace Boostana
             MyHarass.AddSeparator();
             MyHarass.Add("harass.Q", new CheckBox("Use Rapid Fire (Q Spell)", false));
             MyHarass.Add("harass.E", new CheckBox("Use Explosive Charge (E Spell)", false));
-            MyHarass.Add("harass.QE", new Slider("Min. Mana for Harass Spells %", 35, 0, 100));
+            MyHarass.Add("harass.QE", new Slider("Min. Mana for Harass Spells %", 35));
             MyHarass.AddSeparator();
             MyHarass.AddGroupLabel("KillSteal Settings:");
             MyHarass.Add("killsteal.W", new CheckBox("Use Rocket Jump (W Spell)", false));
@@ -108,28 +114,33 @@ namespace Boostana
             MyHarass.AddGroupLabel("Pro Tips");
             MyHarass.AddLabel(" -Remember to play safe and don't be a teemo");
         }
+
         public static void MyActivatorPage()
         {
             MyActivator = MyMenu.AddSubMenu("Items Settings", "Items");
             MyActivator.AddGroupLabel("Items usage:");
             MyActivator.AddSeparator();
             MyActivator.Add("bilgewater", new CheckBox("Use Bilgewater Cutlass"));
-            MyActivator.Add("bilgewater.HP", new Slider("Use Bilgewater Cutlass if hp is lower than {0}(%)", 60, 0, 100));
+            MyActivator.Add("bilgewater.HP", new Slider("Use Bilgewater Cutlass if hp is lower than {0}(%)", 60));
             MyActivator.AddSeparator();
             MyActivator.Add("botrk", new CheckBox("Use Blade of The Ruined King"));
-            MyActivator.Add("botrk.HP", new Slider("Use Blade of The Ruined King if hp is lower than {0}(%)", 60, 0, 100));
+            MyActivator.Add("botrk.HP",
+                new Slider("Use Blade of The Ruined King if hp is lower than {0}(%)", 60));
             MyActivator.AddSeparator();
             MyActivator.Add("youmus", new CheckBox("Use Youmus Ghostblade"));
-            MyActivator.Add("items.Youmuss.HP", new Slider("Use Youmuss Ghostblade if hp is lower than {0}(%)", 60, 1, 100));
-            MyActivator.Add("youmus.Enemies", new Slider("Use Youmus Ghostblade when there are {0} enemies in range", 3, 1, 5));
+            MyActivator.Add("items.Youmuss.HP",
+                new Slider("Use Youmuss Ghostblade if hp is lower than {0}(%)", 60, 1));
+            MyActivator.Add("youmus.Enemies",
+                new Slider("Use Youmus Ghostblade when there are {0} enemies in range", 3, 1, 5));
             MyActivator.AddSeparator();
             MySpells = MyMenu.AddSubMenu("Spells Settings");
             MySpells.AddGroupLabel("Spells settings:");
             MySpells.AddGroupLabel("Heal settings:");
-            MySpells.Add("spells.Heal.Hp", new Slider("Use Heal when HP is lower than {0}(%)", 30, 1, 100));
+            MySpells.Add("spells.Heal.Hp", new Slider("Use Heal when HP is lower than {0}(%)", 30, 1));
             MySpells.AddGroupLabel("Ignite settings:");
-            MySpells.Add("spells.Ignite.Focus", new Slider("Use Ignite when target HP is lower than {0}(%)", 10, 1, 100));
+            MySpells.Add("spells.Ignite.Focus", new Slider("Use Ignite when target HP is lower than {0}(%)", 10, 1));
         }
+
         public static void MyOtherFunctionsPage()
         {
             MyOtherFunctions = MyMenu.AddSubMenu("Misc Menu", "othermenu");
@@ -145,179 +156,223 @@ namespace Boostana
             MyOtherFunctions.AddGroupLabel("Skin settings");
             MyOtherFunctions.Add("skin.Id", new Slider("Skin Editor", 3, 1, 4));
         }
-        public static bool nodraw()
+
+        public static bool Nodraw()
         {
             return MyDraw["nodraw"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool onlyReady()
+
+        public static bool OnlyReady()
         {
             return MyDraw["onlyready"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool drawingsQ()
+
+        public static bool DrawingsQ()
         {
             return MyDraw["draw.Q"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool drawingsW()
+
+        public static bool DrawingsW()
         {
             return MyDraw["draw.W"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool drawingsE()
+
+        public static bool DrawingsE()
         {
             return MyDraw["draw.E"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool drawingsR()
+
+        public static bool DrawingsR()
         {
             return MyDraw["draw.R"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool comboQ()
+
+        public static bool ComboQ()
         {
             return MyCombo["combo.Q"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool comboW()
+
+        public static bool ComboW()
         {
             return MyCombo["combo.W"].Cast<CheckBox>().CurrentValue;
         }
-        public static float comboW1()
+
+        public static float ComboW1()
         {
             return MyCombo["combo.W1"].Cast<Slider>().CurrentValue;
         }
-        public static bool comboE()
+
+        public static bool ComboE()
         {
             return MyCombo["combo.E"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool comboR()
+
+        public static bool ComboR()
         {
             return MyCombo["combo.R"].Cast<CheckBox>().CurrentValue;
         }
-        public static float comboR1()
+
+        public static float ComboR1()
         {
             return MyCombo["combo.R1"].Cast<Slider>().CurrentValue;
         }
-        public static bool comboER()
+
+        public static bool ComboEr()
         {
             return MyCombo["combo.ER"].Cast<CheckBox>().CurrentValue;
         }
-        public static float comboER1()
+
+        public static float ComboEr1()
         {
             return MyCombo["combo.ER1"].Cast<Slider>().CurrentValue;
         }
-        public static float comboW3()
+
+        public static float ComboW3()
         {
             return MyCombo["combo.W3"].Cast<Slider>().CurrentValue;
         }
-        public static bool lcQ()
+
+        public static bool LcQ()
         {
             return MyFarm["lc.Q"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool lcW()
+
+        public static bool LcW()
         {
             return MyFarm["lc.W"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool lcE()
+
+        public static bool LcE()
         {
             return MyFarm["lc.E"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool lcE1()
+
+        public static bool LcE1()
         {
             return MyFarm["lc.E1"].Cast<CheckBox>().CurrentValue;
         }
-        public static float lcW1()
+
+        public static float LcW1()
         {
             return MyFarm["lc.W1"].Cast<Slider>().CurrentValue;
         }
-        public static float lcM()
+
+        public static float LcM()
         {
             return MyFarm["lc.M"].Cast<Slider>().CurrentValue;
         }
-        public static bool jungleQ()
+
+        public static bool JungleQ()
         {
             return MyFarm["jungle.Q"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool jungleW()
+
+        public static bool JungleW()
         {
             return MyFarm["jungle.W"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool jungleE()
+
+        public static bool JungleE()
         {
             return MyFarm["jungle.E"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool harassQ()
+
+        public static bool HarassQ()
         {
             return MyHarass["harass.Q"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool harassE()
+
+        public static bool HarassE()
         {
             return MyHarass["harass.E"].Cast<CheckBox>().CurrentValue;
         }
-        public static float harassQE()
+
+        public static float HarassQe()
         {
             return MyHarass["harass.QE"].Cast<Slider>().CurrentValue;
         }
-        public static bool killstealW()
+
+        public static bool KillstealW()
         {
             return MyHarass["killsteal.W"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool killstealR()
+
+        public static bool KillstealR()
         {
             return MyHarass["killsteal.R"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool bilgewater()
+
+        public static bool Bilgewater()
         {
             return MyActivator["bilgewater"].Cast<CheckBox>().CurrentValue;
         }
-        public static float bilgewaterHP()
+
+        public static float BilgewaterHp()
         {
             return MyActivator["bilgewater.HP"].Cast<Slider>().CurrentValue;
         }
-        public static bool botrk()
+
+        public static bool Botrk()
         {
             return MyActivator["botrk"].Cast<CheckBox>().CurrentValue;
         }
-        public static float botrkHP()
+
+        public static float BotrkHp()
         {
             return MyActivator["botrk.HP"].Cast<Slider>().CurrentValue;
         }
-        public static bool youmus()
+
+        public static bool Youmus()
         {
             return MyActivator["youmus"].Cast<CheckBox>().CurrentValue;
         }
-        public static float youmusEnemies()
+
+        public static float YoumusEnemies()
         {
             return MyActivator["youmus.Enemies"].Cast<Slider>().CurrentValue;
         }
-        public static float itemsYOUMUShp()
+
+        public static float ItemsYoumuShp()
         {
             return MyActivator["items.Youmuss.HP"].Cast<Slider>().CurrentValue;
         }
-        public static float spellsHealHP()
+
+        public static float SpellsHealHp()
         {
             return MySpells["spells.Heal.HP"].Cast<Slider>().CurrentValue;
         }
-        public static float spellsIgniteFocus()
+
+        public static float SpellsIgniteFocus()
         {
             return MySpells["spells.Ignite.Focus"].Cast<Slider>().CurrentValue;
         }
-        public static int skinId()
+
+        public static int SkinId()
         {
             return MyOtherFunctions["skin.Id"].Cast<Slider>().CurrentValue;
         }
-        public static bool lvlup()
+
+        public static bool Lvlup()
         {
             return MyOtherFunctions["lvlup"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool gapcloserR()
+
+        public static bool GapcloserR()
         {
             return MyOtherFunctions["gapcloser.R"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool gapcloserR1()
+
+        public static bool GapcloserR1()
         {
             return MyOtherFunctions["gapcloser.R1"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool gapcloserR2()
+
+        public static bool GapcloserR2()
         {
             return MyOtherFunctions["gapcloser.R2"].Cast<CheckBox>().CurrentValue;
         }
-        public static bool gapcloserR3()
+
+        public static bool GapcloserR3()
         {
             return MyOtherFunctions["gapcloser.R3"].Cast<CheckBox>().CurrentValue;
         }
