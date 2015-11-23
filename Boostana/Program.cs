@@ -379,9 +379,7 @@ namespace Boostana
         public static void OnLaneClear()
         {
             var count = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.ServerPosition, Player.AttackRange, false).Count();
-            var Tawah = EntityManager.Turrets.Enemies.FirstOrDefault(t => !t.IsDead && t.IsInRange(Player, 800));
             var source = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.ServerPosition, Player.AttackRange).OrderByDescending(a => a.MaxHealth).FirstOrDefault();
-            var sourceE = EntityManager.MinionsAndMonsters.GetLaneMinions().FirstOrDefault(m => m.IsValidTarget(Player.AttackRange) && m.GetBuffCount("tristanaecharge") > 0);
             if (count == 0) return;
             if (E.IsReady() && TristanaMenu.lcE() && source.IsValidTarget(E.Range) && Player.ManaPercent >= TristanaMenu.lcM())
             {
@@ -395,13 +393,14 @@ namespace Boostana
             {
                 W.Cast(source.Position);
             }
+            var sourceE = EntityManager.MinionsAndMonsters.GetLaneMinions().FirstOrDefault(m => m.IsValidTarget(Player.AttackRange) && m.GetBuffCount("tristanaecharge") > 0);
             if (sourceE != null)
             {
                 Orbwalker.ForcedTarget = sourceE;
             }
+            var Tawah = EntityManager.Turrets.Enemies.FirstOrDefault(t => !t.IsDead && t.IsInRange(Player, 800));
             if (Tawah != null)
             {
-
                 if (TristanaMenu.lcE1() && Tawah.IsInRange(Player, E.Range) && E.IsReady() && Player.ManaPercent >= TristanaMenu.lcM())
                 {
                     E.Cast(Tawah);
@@ -453,8 +452,6 @@ namespace Boostana
         private static void OnCombo()
         {
             var Target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            var TargetBoom = EntityManager.Heroes.Enemies.FirstOrDefault(a => a.HasBuff("tristanaecharge") && a.Distance(Player) < Player.AttackRange);
-            var Tawah = EntityManager.Turrets.Enemies.FirstOrDefault(a => !a.IsDead && a.Distance(Target) <= 775 + Player.BoundingRadius + (Target.BoundingRadius / 2) + 44.2);
             if (!Target.IsValidTarget(Q.Range) || Target == null)
             {
                 return;
@@ -468,11 +465,12 @@ namespace Boostana
             {
                     Q.Cast();
             }
+            var Tawah = EntityManager.Turrets.Enemies.FirstOrDefault(a => !a.IsDead && a.Distance(Target) <= 775 + Player.BoundingRadius + (Target.BoundingRadius / 2) + 44.2);
             if (TristanaMenu.comboW() && W.IsReady() && Target.IsValidTarget(W.Range) && Target.Position.CountEnemiesInRange(800) <= TristanaMenu.comboW1() && Tawah == null)
             {
                 W.Cast(Target.Position);
             }
-
+            var TargetBoom = EntityManager.Heroes.Enemies.FirstOrDefault(a => a.HasBuff("tristanaecharge") && a.Distance(Player) < Player.AttackRange);
             if (TargetBoom!= null)
                 if (TristanaMenu.comboER() && !E.IsReady() && R.IsReady() && TargetBoom.IsValidTarget(R.Range) && (TargetBoom.Health + TargetBoom.AllShield + TristanaMenu.comboER1()) - (Player.GetSpellDamage(TargetBoom, SpellSlot.E, DamageLibrary.SpellStages.Default) + (TargetBoom.Buffs.Find(a => a.Name == "tristanaecharge").Count * Player.GetSpellDamage(TargetBoom, SpellSlot.E, DamageLibrary.SpellStages.Detonation))) < Player.GetSpellDamage(TargetBoom, SpellSlot.R))
                 {
