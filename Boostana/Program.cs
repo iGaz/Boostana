@@ -29,16 +29,10 @@ namespace Boostana
         public static bool WtfSecActive;
         public static long LastUpdate;
         public static bool ShouldFlash;
-        public static AIHeroClient Player
-        {
-            get { return ObjectManager.Player; }
-        }
 
-        public static AIHeroClient InsecTarget
-        {
-            get { return EnemyTarget; }
-        }
+        public static AIHeroClient Player = ObjectManager.Player;
 
+        public static AIHeroClient InsecTarget = EnemyTarget;
 
         internal static void Main(string[] args)
         {
