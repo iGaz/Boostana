@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
@@ -6,22 +9,14 @@ using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Rendering;
 using SharpDX;
 using Color = System.Drawing.Color;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Collections.Generic;
 
 namespace Boostana
 {
     public static class Program
     {
-        public static AIHeroClient Player
-        {
-            get { return ObjectManager.Player; }
-        }
-        public static string version = "1.0.4.7";
+        public static string Version = "1.0.4.7";
         public static AIHeroClient Target = null;
-        public static int qOff = 0, wOff = 0, eOff = 0, rOff = 0;
+        public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         public static int[] AbilitySequence;
         public static Spell.Active Q;
         public static Spell.Skillshot W;
@@ -35,36 +30,34 @@ namespace Boostana
         public static long LastUpdate;
         public static bool ShouldFlash;
 
-        public static AIHeroClient InsecTarget
-        {
-            get { return EnemyTarget; }
-        }
+        public static AIHeroClient Player => ObjectManager.Player;
 
-        private static AIHeroClient _Player
-        {
-            get { return ObjectManager.Player; }
-        }
+        public static AIHeroClient InsecTarget => EnemyTarget;
+
         internal static void Main(string[] args)
         {
             Loading.OnLoadingComplete += OnLoadingComplete;
             Bootstrap.Init(null);
         }
+
         private static void OnLoadingComplete(EventArgs args)
         {
             if (Player.ChampionName != "Tristana") return;
-            AbilitySequence = new int[] { 3, 2, 1, 3, 3, 4, 3, 1, 3, 1, 4, 1, 1, 2, 2, 4, 2, 2 };
+            AbilitySequence = new[] {3, 2, 1, 3, 3, 4, 3, 1, 3, 1, 4, 1, 1, 2, 2, 4, 2, 2};
             Chat.Print("Boostana Loaded!", Color.CornflowerBlue);
             Chat.Print("Enjoy the game and DONT FLAME!", Color.Red);
-            TristanaMenu.loadMenu();
+            TristanaMenu.LoadMenu();
             Game.OnTick += GameOnTick;
-            MyActivator.loadSpells();
+            MyActivator.LoadSpells();
             Game.OnUpdate += OnGameUpdate;
 
             #region Skill
+
             Q = new Spell.Active(SpellSlot.Q, 550);
             W = new Spell.Skillshot(SpellSlot.W, 900, SkillShotType.Circular, 450, int.MaxValue, 180);
             E = new Spell.Targeted(SpellSlot.E, 550);
             R = new Spell.Targeted(SpellSlot.R, 550);
+
             #endregion
 
             Obj_AI_Base.OnLevelUp += Obj_AI_Base_OnLevelUp;
@@ -73,20 +66,20 @@ namespace Boostana
             GameObject.OnCreate += GameObject_OnCreate;
             Drawing.OnDraw += GameOnDraw;
         }
+
         private static void Obj_AI_Base_OnLevelUp(Obj_AI_Base sender, Obj_AI_BaseLevelUpEventArgs args)
         {
             if (sender.IsMe)
             {
-                Q = new Spell.Active(SpellSlot.Q, 543 + (7 * (uint)Player.Level));
-                E = new Spell.Targeted(SpellSlot.E, 543 + (7 * (uint)Player.Level));
-                R = new Spell.Targeted(SpellSlot.R, 543 + (7 * (uint)Player.Level));
+                Q = new Spell.Active(SpellSlot.Q, 543 + (7*(uint) Player.Level));
+                E = new Spell.Targeted(SpellSlot.E, 543 + (7*(uint) Player.Level));
+                R = new Spell.Targeted(SpellSlot.R, 543 + (7*(uint) Player.Level));
             }
         }
 
-
         public static void GameOnDraw(EventArgs args)
         {
-            if (TristanaMenu.nodraw()) return;
+            if (TristanaMenu.Nodraw()) return;
 
             if (InsecTarget.IsValidTarget())
             {
@@ -97,68 +90,65 @@ namespace Boostana
                 Circle.Draw(SharpDX.Color.BlueViolet, AllyTarget.BoundingRadius + 100, AllyTarget.Position);
             }
 
-            if (!TristanaMenu.onlyReady())
+            if (!TristanaMenu.OnlyReady())
             {
-                if (TristanaMenu.drawingsQ())
+                if (TristanaMenu.DrawingsQ())
                 {
-                    new Circle() { Color = Color.AliceBlue, Radius = Q.Range, BorderWidth = 2f }.Draw(Player.Position);
+                    new Circle {Color = Color.AliceBlue, Radius = Q.Range, BorderWidth = 2f}.Draw(Player.Position);
                 }
-                if (TristanaMenu.drawingsW())
+                if (TristanaMenu.DrawingsW())
                 {
-                    new Circle() { Color = Color.OrangeRed, Radius = W.Range, BorderWidth = 2f }.Draw(Player.Position);
+                    new Circle {Color = Color.OrangeRed, Radius = W.Range, BorderWidth = 2f}.Draw(Player.Position);
                 }
-                if (TristanaMenu.drawingsE())
+                if (TristanaMenu.DrawingsE())
                 {
-                    new Circle() { Color = Color.Cyan, Radius = E.Range, BorderWidth = 2f }.Draw(Player.Position);
+                    new Circle {Color = Color.Cyan, Radius = E.Range, BorderWidth = 2f}.Draw(Player.Position);
                 }
-                if (TristanaMenu.drawingsR())
+                if (TristanaMenu.DrawingsR())
                 {
-                    new Circle() { Color = Color.SkyBlue, Radius = R.Range, BorderWidth = 2f }.Draw(Player.Position);
+                    new Circle {Color = Color.SkyBlue, Radius = R.Range, BorderWidth = 2f}.Draw(Player.Position);
                 }
-
             }
             else
             {
-                if (!Q.IsOnCooldown && TristanaMenu.drawingsQ())
+                if (!Q.IsOnCooldown && TristanaMenu.DrawingsQ())
                 {
-
-                    new Circle() { Color = Color.AliceBlue, Radius = 340, BorderWidth = 2f }.Draw(Player.Position);
+                    new Circle {Color = Color.AliceBlue, Radius = 340, BorderWidth = 2f}.Draw(Player.Position);
                 }
-                if (!W.IsOnCooldown && TristanaMenu.drawingsW())
+                if (!W.IsOnCooldown && TristanaMenu.DrawingsW())
                 {
-
-                    new Circle() { Color = Color.OrangeRed, Radius = 800, BorderWidth = 2f }.Draw(Player.Position);
+                    new Circle {Color = Color.OrangeRed, Radius = 800, BorderWidth = 2f}.Draw(Player.Position);
                 }
-                if (!E.IsOnCooldown && TristanaMenu.drawingsE())
+                if (!E.IsOnCooldown && TristanaMenu.DrawingsE())
                 {
-
-                    new Circle() { Color = Color.Cyan, Radius = 500, BorderWidth = 2f }.Draw(Player.Position);
+                    new Circle {Color = Color.Cyan, Radius = 500, BorderWidth = 2f}.Draw(Player.Position);
                 }
-                if (!R.IsOnCooldown && TristanaMenu.drawingsR())
+                if (!R.IsOnCooldown && TristanaMenu.DrawingsR())
                 {
-
-                    new Circle() { Color = Color.SkyBlue, Radius = 500, BorderWidth = 2f }.Draw(Player.Position);
+                    new Circle {Color = Color.SkyBlue, Radius = 500, BorderWidth = 2f}.Draw(Player.Position);
                 }
             }
         }
+
         private static void OnGameUpdate(EventArgs args)
         {
-            if (MyActivator.heal != null)
+            if (MyActivator.Heal != null)
                 Heal();
-            if (MyActivator.ignite != null)
-                ignite();
-            Player.SetSkinId(TristanaMenu.skinId());
+            if (MyActivator.Ignite != null)
+                Ignite();
+            Player.SetSkinId(TristanaMenu.SkinId());
         }
+
         public static void LevelUpSpells()
         {
-            int qL = Player.Spellbook.GetSpell(SpellSlot.Q).Level + qOff;
-            int wL = Player.Spellbook.GetSpell(SpellSlot.W).Level + wOff;
-            int eL = Player.Spellbook.GetSpell(SpellSlot.E).Level + eOff;
-            int rL = Player.Spellbook.GetSpell(SpellSlot.R).Level + rOff;
+            var qL = Player.Spellbook.GetSpell(SpellSlot.Q).Level + QOff;
+            var wL = Player.Spellbook.GetSpell(SpellSlot.W).Level + WOff;
+            var eL = Player.Spellbook.GetSpell(SpellSlot.E).Level + EOff;
+            var rL = Player.Spellbook.GetSpell(SpellSlot.R).Level + ROff;
             if (qL + wL + eL + rL < ObjectManager.Player.Level)
             {
-                int[] level = new int[] { 0, 0, 0, 0 };
-                for (int i = 0; i < ObjectManager.Player.Level; i++)
+                int[] level = {0, 0, 0, 0};
+                for (var i = 0; i < ObjectManager.Player.Level; i++)
                 {
                     level[AbilitySequence[i] - 1] = level[AbilitySequence[i] - 1] + 1;
                 }
@@ -171,53 +161,61 @@ namespace Boostana
 
         private static void AntiGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
         {
-            if (!e.Sender.IsValidTarget() || !TristanaMenu.gapcloserR() || e.Sender.Type != Player.Type || !e.Sender.IsEnemy)
+            if (!e.Sender.IsValidTarget() || !TristanaMenu.GapcloserR() || e.Sender.Type != Player.Type ||
+                !e.Sender.IsEnemy)
             {
                 return;
             }
 
             R.Cast(e.Sender);
         }
-        private static void Interrupter_OnInterruptableSpell(Obj_AI_Base sender, Interrupter.InterruptableSpellEventArgs e)
+
+        private static void Interrupter_OnInterruptableSpell(Obj_AI_Base sender,
+            Interrupter.InterruptableSpellEventArgs e)
         {
-            if (!sender.IsValidTarget(Q.Range) || e.DangerLevel != DangerLevel.High || e.Sender.Type != Player.Type || !e.Sender.IsEnemy)
+            if (!sender.IsValidTarget(Q.Range) || e.DangerLevel != DangerLevel.High || e.Sender.Type != Player.Type ||
+                !e.Sender.IsEnemy)
             {
                 return;
             }
-            if (R.IsReady() && R.IsInRange(sender) && TristanaMenu.gapcloserR1())
+            if (R.IsReady() && R.IsInRange(sender) && TristanaMenu.GapcloserR1())
             {
                 R.Cast(sender);
             }
-
         }
+
         private static void GameObject_OnCreate(GameObject sender, EventArgs args)
         {
             var rengar = EntityManager.Heroes.Enemies.Find(r => r.ChampionName.Equals("Rengar"));
             var khazix = EntityManager.Heroes.Enemies.Find(z => z.ChampionName.Equals("Khazix"));
             if (khazix != null)
             {
-                if (sender.Name == ("Khazix_Base_E_Tar.troy") && TristanaMenu.gapcloserR2() && sender.Position.Distance(Player) <= 400)
+                if (sender.Name == ("Khazix_Base_E_Tar.troy") && TristanaMenu.GapcloserR2() &&
+                    sender.Position.Distance(Player) <= 400)
                     R.Cast(khazix);
             }
             if (rengar != null)
             {
-                if (sender.Name == ("Rengar_LeapSound.troy") && TristanaMenu.gapcloserR3() && sender.Position.Distance(Player) < R.Range)
+                if (sender.Name == ("Rengar_LeapSound.troy") && TristanaMenu.GapcloserR3() &&
+                    sender.Position.Distance(Player) < R.Range)
                     R.Cast(rengar);
             }
         }
 
-        public static void ignite()
+        public static void Ignite()
         {
-            var autoIgnite = TargetSelector.GetTarget(MyActivator.ignite.Range, DamageType.True);
-            if (autoIgnite != null && autoIgnite.Health <= DamageLibrary.GetSpellDamage(Player, autoIgnite, MyActivator.ignite.Slot) || autoIgnite != null && autoIgnite.HealthPercent <= TristanaMenu.spellsIgniteFocus())
-                MyActivator.ignite.Cast(autoIgnite);
-
+            var autoIgnite = TargetSelector.GetTarget(MyActivator.Ignite.Range, DamageType.True);
+            if (autoIgnite != null && autoIgnite.Health <= Player.GetSpellDamage(autoIgnite, MyActivator.Ignite.Slot) ||
+                autoIgnite != null && autoIgnite.HealthPercent <= TristanaMenu.SpellsIgniteFocus())
+                MyActivator.Ignite.Cast(autoIgnite);
         }
+
         public static void Heal()
         {
-            if (MyActivator.heal.IsReady() && Player.HealthPercent <= TristanaMenu.spellsHealHP())
-                MyActivator.heal.Cast();
+            if (MyActivator.Heal.IsReady() && Player.HealthPercent <= TristanaMenu.SpellsHealHp())
+                MyActivator.Heal.Cast();
         }
+
         private static void GameOnTick(EventArgs args)
         {
             if (!InsecActive || LastUpdate + 200 <= Environment.TickCount)
@@ -225,7 +223,7 @@ namespace Boostana
                 InsecPos = new Vector3();
             }
 
-            if (TristanaMenu.lvlup()) LevelUpSpells();
+            if (TristanaMenu.Lvlup()) LevelUpSpells();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)) OnCombo();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)) OnHarrass();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)) OnLaneClear();
@@ -236,8 +234,8 @@ namespace Boostana
             }
             KillSteal();
             AutoE();
-
         }
+
         private static Vector3 InterceptionPoint(List<Obj_AI_Base> heroes)
         {
             var result = new Vector3();
@@ -272,18 +270,18 @@ namespace Boostana
             }
             return new Vector3();
         }
-    
+
         private static void Game_OnWndProc(WndEventArgs args)
         {
             if (args.Msg != 0x202) return;
             var enemyT =
-            EntityManager.Heroes.Enemies
-                .Where(
-                    a =>
-                        a.IsValid && a.Health > 0 && (a.IsEnemy) && a.Distance(Game.CursorPos) < 200)
-                .ToList()
-                .OrderBy(a => a.Distance(Game.CursorPos))
-                .FirstOrDefault();
+                EntityManager.Heroes.Enemies
+                    .Where(
+                        a =>
+                            a.IsValid && a.Health > 0 && (a.IsEnemy) && a.Distance(Game.CursorPos) < 200)
+                    .ToList()
+                    .OrderBy(a => a.Distance(Game.CursorPos))
+                    .FirstOrDefault();
 
             if (enemyT != null)
             {
@@ -309,13 +307,15 @@ namespace Boostana
             AllyTarget = null;
             EnemyTarget = null;
         }
-    
 
         public static void Insec()
         {
             var target = EnemyTarget;
 
-            Orbwalker.OrbwalkTo(TristanaMenu.MyCombo["insecPositionMode"].Cast<Slider>().CurrentValue == 1 && target != null || GetBestInsecPos() == Game.CursorPos && target != null ? target.Position : Game.CursorPos);
+            Orbwalker.OrbwalkTo(TristanaMenu.MyCombo["insecPositionMode"].Cast<Slider>().CurrentValue == 1 &&
+                                target != null || GetBestInsecPos() == Game.CursorPos && target != null
+                ? target.Position
+                : Game.CursorPos);
 
 
             if (target == null || !target.IsValidTarget())
@@ -323,184 +323,235 @@ namespace Boostana
             var allyPos = GetBestInsecPos();
             if (InsecPos == new Vector3())
             {
-                var insecPos = allyPos.Extend(target.Position, target.Distance(allyPos) + TristanaMenu.MyCombo["insecDistance"].Cast<Slider>().CurrentValue).To3D();
+                var insecPos =
+                    allyPos.Extend(target.Position,
+                        target.Distance(allyPos) + TristanaMenu.MyCombo["insecDistance"].Cast<Slider>().CurrentValue)
+                        .To3D();
                 InsecPos = insecPos;
                 LastUpdate = Environment.TickCount;
             }
-            if (!Program.R.IsReady())
+            if (!R.IsReady())
             {
                 OnCombo();
                 return;
             }
 
-            if (_Player.Distance(InsecPos) < 200)
+            if (Player.Distance(InsecPos) < 200)
             {
-                Program.R.Cast(target);
+                R.Cast(target);
                 return;
             }
-            if(_Player.Distance(InsecPos) > 200)
+            if (Player.Distance(InsecPos) > 200)
             {
-                Program.R.Cast(InsecPos);
-                return;
+                R.Cast(InsecPos);
             }
         }
 
         private static void KillSteal()
         {
-            foreach (var Target in EntityManager.Heroes.Enemies.Where(hero => hero.IsValidTarget(W.Range) && !hero.IsDead && !hero.IsZombie && hero.HealthPercent <= 25))
+            foreach (
+                var target2 in
+                    EntityManager.Heroes.Enemies.Where(
+                        hero =>
+                            hero.IsValidTarget(W.Range) && !hero.IsDead && !hero.IsZombie && hero.HealthPercent <= 25))
             {
-                var Tawah = EntityManager.Turrets.Enemies.FirstOrDefault(a => !a.IsDead && a.Distance(Target) <= 775 + Player.BoundingRadius + (Target.BoundingRadius / 2) + 44.2);
-                if (TristanaMenu.killstealR() && R.IsReady() && Target.Health + Target.AttackShield < Player.GetSpellDamage(Target, SpellSlot.R, DamageLibrary.SpellStages.Default))
+                var tawah =
+                    EntityManager.Turrets.Enemies.FirstOrDefault(
+                        a =>
+                            !a.IsDead &&
+                            a.Distance(target2) <= 775 + Player.BoundingRadius + (target2.BoundingRadius/2) + 44.2);
+                if (TristanaMenu.KillstealR() && R.IsReady() &&
+                    target2.Health + target2.AttackShield <
+                    Player.GetSpellDamage(target2, SpellSlot.R))
                 {
-                    R.Cast(Target);
+                    R.Cast(target2);
                 }
 
-                if (TristanaMenu.killstealW() && W.IsReady() && Target.Health + Target.AttackShield < Player.GetSpellDamage(Target, SpellSlot.W, DamageLibrary.SpellStages.Default) && Target.Position.CountEnemiesInRange(800) == 1 && Tawah == null && Player.Mana >= 120)
+                if (TristanaMenu.KillstealW() && W.IsReady() &&
+                    target2.Health + target2.AttackShield <
+                    Player.GetSpellDamage(target2, SpellSlot.W) &&
+                    target2.Position.CountEnemiesInRange(800) == 1 && tawah == null && Player.Mana >= 120)
                 {
-                    W.Cast(Target.Position);
+                    W.Cast(target2.Position);
                 }
-
             }
         }
+
         private static void AutoE()
         {
             if (!TristanaMenu.MyCombo["combo.CC"].Cast<CheckBox>().CurrentValue)
             {
                 return;
             }
-            var autoETarget = EntityManager.Heroes.Enemies.FirstOrDefault(x =>x.HasBuffOfType(BuffType.Charm) || x.HasBuffOfType(BuffType.Knockup) || x.HasBuffOfType(BuffType.Stun) || x.HasBuffOfType(BuffType.Suppression) || x.HasBuffOfType(BuffType.Snare));
+            var autoETarget =
+                EntityManager.Heroes.Enemies.FirstOrDefault(
+                    x =>
+                        x.HasBuffOfType(BuffType.Charm) || x.HasBuffOfType(BuffType.Knockup) ||
+                        x.HasBuffOfType(BuffType.Stun) || x.HasBuffOfType(BuffType.Suppression) ||
+                        x.HasBuffOfType(BuffType.Snare));
             if (autoETarget != null && !autoETarget.HasBuff("tristanaecharge"))
             {
                 Q.Cast(autoETarget);
             }
         }
 
-
         public static void OnLaneClear()
         {
-            var count = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.ServerPosition, Player.AttackRange, false).Count();
-            var source = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.ServerPosition, Player.AttackRange).OrderByDescending(a => a.MaxHealth).FirstOrDefault();
+            var count =
+                EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.ServerPosition,
+                    Player.AttackRange, false).Count();
+            var tawah = EntityManager.Turrets.Enemies.FirstOrDefault(t => !t.IsDead && t.IsInRange(Player, 800));
+            var source =
+                EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.ServerPosition,
+                    Player.AttackRange).OrderByDescending(a => a.MaxHealth).FirstOrDefault();
+            var sourceE =
+                EntityManager.MinionsAndMonsters.GetLaneMinions()
+                    .FirstOrDefault(m => m.IsValidTarget(Player.AttackRange) && m.GetBuffCount("tristanaecharge") > 0);
             if (count == 0) return;
-            if (E.IsReady() && TristanaMenu.lcE() && source.IsValidTarget(E.Range) && Player.ManaPercent >= TristanaMenu.lcM())
+            if (E.IsReady() && TristanaMenu.LcE() && source.IsValidTarget(E.Range) &&
+                Player.ManaPercent >= TristanaMenu.LcM())
             {
                 E.Cast(source);
             }
-             if (Q.IsReady() && TristanaMenu.lcQ() && source.IsValidTarget(Q.Range) && Player.ManaPercent >= TristanaMenu.lcM())
+            if (Q.IsReady() && TristanaMenu.LcQ() && source.IsValidTarget(Q.Range) &&
+                Player.ManaPercent >= TristanaMenu.LcM())
             {
                 Q.Cast();
             }
-            if (W.IsReady() && TristanaMenu.lcW() && TristanaMenu.lcW1() <= count && Player.ManaPercent >= TristanaMenu.lcM())
+            if (W.IsReady() && TristanaMenu.LcW() && TristanaMenu.LcW1() <= count &&
+                Player.ManaPercent >= TristanaMenu.LcM())
             {
-                W.Cast(source.Position);
+                if (source != null) W.Cast(source.Position);
             }
-            var sourceE = EntityManager.MinionsAndMonsters.GetLaneMinions().FirstOrDefault(m => m.IsValidTarget(Player.AttackRange) && m.GetBuffCount("tristanaecharge") > 0);
             if (sourceE != null)
             {
                 Orbwalker.ForcedTarget = sourceE;
             }
-            var Tawah = EntityManager.Turrets.Enemies.FirstOrDefault(t => !t.IsDead && t.IsInRange(Player, 800));
-            if (Tawah != null)
+            if (tawah == null) return;
+            if (TristanaMenu.LcE1() && tawah.IsInRange(Player, E.Range) && E.IsReady() &&
+                Player.ManaPercent >= TristanaMenu.LcM())
             {
-                if (TristanaMenu.lcE1() && Tawah.IsInRange(Player, E.Range) && E.IsReady() && Player.ManaPercent >= TristanaMenu.lcM())
-                {
-                    E.Cast(Tawah);
-                }
-
-                if (TristanaMenu.lcQ() && Tawah.IsInRange(Player, Q.Range) && Q.IsReady() && Player.ManaPercent >= TristanaMenu.lcM())
-                {
-                    Q.Cast();
-                }
+                E.Cast(tawah);
             }
 
-        }
-        public static void OnJungle()
-        {
-            var source = EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.ServerPosition, Q.Range).OrderByDescending(a => a.MaxHealth).FirstOrDefault();
-            if (Q.IsReady() && TristanaMenu.jungleQ() && source.Distance(Player) <= Q.Range)
+            if (TristanaMenu.LcQ() && tawah.IsInRange(Player, Q.Range) && Q.IsReady() &&
+                Player.ManaPercent >= TristanaMenu.LcM())
             {
                 Q.Cast();
             }
-            if (W.IsReady() && TristanaMenu.jungleW() && source.Distance(Player) <= W.Range)
+        }
+
+        public static void OnJungle()
+        {
+            var source =
+                EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.ServerPosition, Q.Range)
+                    .OrderByDescending(a => a.MaxHealth)
+                    .FirstOrDefault();
+            if (Q.IsReady() && TristanaMenu.JungleQ() && source.Distance(Player) <= Q.Range)
+            {
+                Q.Cast();
+            }
+            if (source != null)
+                if (W.IsReady() && TristanaMenu.JungleW() && source.Distance(Player) <= W.Range)
             {
                 W.Cast(source.Position);
             }
-            if (E.IsReady() && TristanaMenu.jungleE() && source.Distance(Player) <= E.Range)
+            if (E.IsReady() && TristanaMenu.JungleE() && source.Distance(Player) <= E.Range)
             {
                 E.Cast(source);
             }
         }
+
         private static void OnHarrass()
         {
-            var Target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (!Target.IsValidTarget())
+            var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+            if (!target.IsValidTarget())
             {
                 return;
             }
 
             Orbwalker.ForcedTarget = null;
 
-            if (TristanaMenu.harassE() && E.IsReady() && Target.IsValidTarget(E.Range) && Player.ManaPercent >= TristanaMenu.harassQE())
+            if (TristanaMenu.HarassE() && E.IsReady() && target.IsValidTarget(E.Range) &&
+                Player.ManaPercent >= TristanaMenu.HarassQe())
             {
-                E.Cast(Target);
+                E.Cast(target);
             }
 
-            if (TristanaMenu.harassQ() && Target.IsValidTarget(Q.Range) && Player.ManaPercent >= TristanaMenu.harassQE() && Target.GetBuffCount("tristanaecharge") > 0)
+            if (TristanaMenu.HarassQ() && target.IsValidTarget(Q.Range) && Player.ManaPercent >= TristanaMenu.HarassQe() &&
+                target.GetBuffCount("tristanaecharge") > 0)
             {
                 Q.Cast();
             }
         }
+
         private static void OnCombo()
         {
-            var Target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (!Target.IsValidTarget(Q.Range) || Target == null)
+            var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+            var targetBoom =
+                EntityManager.Heroes.Enemies.FirstOrDefault(
+                    a => a.HasBuff("tristanaecharge") && a.Distance(Player) < Player.AttackRange);
+            var tawah =
+                EntityManager.Turrets.Enemies.FirstOrDefault(
+                    a =>
+                        !a.IsDead &&
+                        a.Distance(target) <= 775 + Player.BoundingRadius + (target.BoundingRadius/2) + 44.2);
+            if (!target.IsValidTarget(Q.Range) || target == null)
             {
                 return;
             }
-            if (TristanaMenu.comboE() && E.IsReady() && Target.IsValidTarget(E.Range))
+            if (TristanaMenu.ComboE() && E.IsReady() && target.IsValidTarget(E.Range))
             {
-                E.Cast(Target);
-                Orbwalker.ForcedTarget = Target;
+                E.Cast(target);
+                Orbwalker.ForcedTarget = target;
             }
-            if (TristanaMenu.comboQ() && Q.IsReady() && Target.IsValidTarget(Q.Range))
+            if (TristanaMenu.ComboQ() && Q.IsReady() && target.IsValidTarget(Q.Range))
             {
-                    Q.Cast();
+                Q.Cast();
             }
-            var Tawah = EntityManager.Turrets.Enemies.FirstOrDefault(a => !a.IsDead && a.Distance(Target) <= 775 + Player.BoundingRadius + (Target.BoundingRadius / 2) + 44.2);
-            if (TristanaMenu.comboW() && W.IsReady() && Target.IsValidTarget(W.Range) && Target.Position.CountEnemiesInRange(800) <= TristanaMenu.comboW1() && Tawah == null)
+            if (TristanaMenu.ComboW() && W.IsReady() && target.IsValidTarget(W.Range) &&
+                target.Position.CountEnemiesInRange(800) <= TristanaMenu.ComboW1() && tawah == null)
             {
-                W.Cast(Target.Position);
+                W.Cast(target.Position);
             }
-            var TargetBoom = EntityManager.Heroes.Enemies.FirstOrDefault(a => a.HasBuff("tristanaecharge") && a.Distance(Player) < Player.AttackRange);
-            if (TargetBoom!= null)
-                if (TristanaMenu.comboER() && !E.IsReady() && R.IsReady() && TargetBoom.IsValidTarget(R.Range) && (TargetBoom.Health + TargetBoom.AllShield + TristanaMenu.comboER1()) - (Player.GetSpellDamage(TargetBoom, SpellSlot.E, DamageLibrary.SpellStages.Default) + (TargetBoom.Buffs.Find(a => a.Name == "tristanaecharge").Count * Player.GetSpellDamage(TargetBoom, SpellSlot.E, DamageLibrary.SpellStages.Detonation))) < Player.GetSpellDamage(TargetBoom, SpellSlot.R))
+
+            if (targetBoom != null)
+                if (TristanaMenu.ComboEr() && !E.IsReady() && R.IsReady() && targetBoom.IsValidTarget(R.Range) &&
+                    (targetBoom.Health + targetBoom.AllShield + TristanaMenu.ComboEr1()) -
+                    (Player.GetSpellDamage(targetBoom, SpellSlot.E) +
+                     (targetBoom.Buffs.Find(a => a.Name == "tristanaecharge").Count*
+                      Player.GetSpellDamage(targetBoom, SpellSlot.E, DamageLibrary.SpellStages.Detonation))) <
+                    Player.GetSpellDamage(targetBoom, SpellSlot.R))
                 {
-                    R.Cast(TargetBoom);
+                    R.Cast(targetBoom);
                 }
 
-            if (R.IsReady() && TristanaMenu.comboR() && Target.IsValidTarget(R.Range) && Target.Health + Target.AttackShield + TristanaMenu.comboR1() < Player.GetSpellDamage(Target, SpellSlot.R, DamageLibrary.SpellStages.Default))
+            if (R.IsReady() && TristanaMenu.ComboR() && target.IsValidTarget(R.Range) &&
+                target.Health + target.AttackShield + TristanaMenu.ComboR1() <
+                Player.GetSpellDamage(target, SpellSlot.R))
             {
-                R.Cast(Target);
+                R.Cast(target);
             }
 
-            if ((ObjectManager.Player.CountEnemiesInRange(ObjectManager.Player.AttackRange) >= TristanaMenu.youmusEnemies() || Player.HealthPercent >= TristanaMenu.itemsYOUMUShp()) && MyActivator.youmus.IsReady() && TristanaMenu.youmus() && MyActivator.youmus.IsOwned())
+            if ((ObjectManager.Player.CountEnemiesInRange(ObjectManager.Player.AttackRange) >=
+                 TristanaMenu.YoumusEnemies() || Player.HealthPercent >= TristanaMenu.ItemsYoumuShp()) &&
+                MyActivator.Youmus.IsReady() && TristanaMenu.Youmus() && MyActivator.Youmus.IsOwned())
             {
-                MyActivator.youmus.Cast();
+                MyActivator.Youmus.Cast();
                 return;
             }
-            if (Player.HealthPercent <= TristanaMenu.bilgewaterHP() && TristanaMenu.bilgewater() && MyActivator.bilgewater.IsReady() && MyActivator.bilgewater.IsOwned())
+            if (Player.HealthPercent <= TristanaMenu.BilgewaterHp() && TristanaMenu.Bilgewater() &&
+                MyActivator.Bilgewater.IsReady() && MyActivator.Bilgewater.IsOwned())
             {
-                MyActivator.bilgewater.Cast(Target);
-                return;
-            }
-
-            if (Player.HealthPercent <= TristanaMenu.botrkHP() && TristanaMenu.botrk() && MyActivator.botrk.IsReady() && MyActivator.botrk.IsOwned())
-            {
-                MyActivator.botrk.Cast(Target);
+                MyActivator.Bilgewater.Cast(target);
                 return;
             }
 
+            if (Player.HealthPercent <= TristanaMenu.BotrkHp() && TristanaMenu.Botrk() && MyActivator.Botrk.IsReady() &&
+                MyActivator.Botrk.IsOwned())
+            {
+                MyActivator.Botrk.Cast(target);
+            }
         }
     }
-    }
-
-
+}
