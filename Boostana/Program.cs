@@ -447,6 +447,7 @@ namespace Boostana
                 EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.ServerPosition, Q.Range)
                     .OrderByDescending(a => a.MaxHealth)
                     .FirstOrDefault();
+                    if (source == null) return;
             if (Q.IsReady() && TristanaMenu.JungleQ() && source.Distance(Player) <= Q.Range)
             {
                 Q.Cast();
