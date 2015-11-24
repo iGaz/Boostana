@@ -154,7 +154,7 @@ namespace Boostana
             MyOtherFunctions.Add("lvlup", new CheckBox("Auto Level Up Spells:", false));
             MyOtherFunctions.AddSeparator();
             MyOtherFunctions.AddGroupLabel("Skin settings");
-            MyOtherFunctions.Add("skin.Id", new Slider("Skin Editor", 3, 1, 4));
+            MyOtherFunctions.Add("skin.Id", new Slider("Skin Editor", 3, 1, 6));
         }
 
         public static bool Nodraw()
