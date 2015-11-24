@@ -14,7 +14,7 @@ namespace Boostana
 {
     public static class Program
     {
-        public static string Version = "1.0.4.7";
+        public static string Version = "1.0.7.1";
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         public static int[] AbilitySequence;
