@@ -423,10 +423,6 @@ namespace Boostana
             {
                 if (source != null) W.Cast(source.Position);
             }
-            if (sourceE != null)
-            {
-                Orbwalker.ForcedTarget = sourceE;
-            }
             if (tawah == null) return;
             if (TristanaMenu.LcE1() && tawah.IsInRange(Player, E.Range) && E.IsReady() &&
                 Player.ManaPercent >= TristanaMenu.LcM())
@@ -471,8 +467,6 @@ namespace Boostana
                 return;
             }
 
-            Orbwalker.ForcedTarget = null;
-
             if (TristanaMenu.HarassE() && E.IsReady() && target.IsValidTarget(E.Range) &&
                 Player.ManaPercent >= TristanaMenu.HarassQe())
             {
@@ -499,7 +493,6 @@ namespace Boostana
             if (TristanaMenu.ComboE() && E.IsReady() && target.IsValidTarget(E.Range))
             {
                 E.Cast(target);
-                Orbwalker.ForcedTarget = target;
             }
             if (TristanaMenu.ComboQ() && Q.IsReady() && target.IsValidTarget(Q.Range))
             {
