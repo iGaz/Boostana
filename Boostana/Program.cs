@@ -391,7 +391,7 @@ namespace Boostana
                         x.HasBuffOfType(BuffType.Snare));
             if (autoETarget != null && !autoETarget.HasBuff("tristanaecharge"))
             {
-                Q.Cast(autoETarget);
+                E.Cast(autoETarget);
             }
         }
 
