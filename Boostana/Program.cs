@@ -492,11 +492,6 @@ namespace Boostana
             var targetBoom =
                 EntityManager.Heroes.Enemies.FirstOrDefault(
                     a => a.HasBuff("tristanaecharge") && a.Distance(Player) < Player.AttackRange);
-            var tawah =
-                EntityManager.Turrets.Enemies.FirstOrDefault(
-                    a =>
-                        !a.IsDead &&
-                        a.Distance(target) <= 775 + Player.BoundingRadius + (target.BoundingRadius/2) + 44.2);
             if (!target.IsValidTarget(Q.Range) || target == null)
             {
                 return;
@@ -511,7 +506,7 @@ namespace Boostana
                 Q.Cast();
             }
             if (TristanaMenu.ComboW() && W.IsReady() && target.IsValidTarget(W.Range) &&
-                target.Position.CountEnemiesInRange(800) <= TristanaMenu.ComboW1() && tawah == null)
+                target.Position.CountEnemiesInRange(800) <= TristanaMenu.ComboW1())
             {
                 W.Cast(target.Position);
             }
