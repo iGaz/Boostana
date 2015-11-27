@@ -3,11 +3,11 @@ using EloBuddy.SDK;
 
 namespace Boostana
 {
-    class MyActivator
+    internal static class MyActivator
     {
         public static Spell.Targeted Ignite;
         public static Item Youmus, Botrk, Bilgewater;
-        public static Spell.Targeted Smite;
+        private static Spell.Targeted Smite;
         public static Spell.Active Heal;
         public static void LoadSpells()
         {
