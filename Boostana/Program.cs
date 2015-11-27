@@ -17,22 +17,22 @@ namespace Boostana
         public static string Version = "1.0.7.1";
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
-        public static int[] AbilitySequence;
-        public static Spell.Active Q;
-        public static Spell.Skillshot W;
-        public static Spell.Targeted E;
-        public static Spell.Targeted R;
-        public static Obj_AI_Base AllyTarget;
-        public static AIHeroClient EnemyTarget;
-        public static Vector3 InsecPos;
-        public static bool InsecActive;
+        private static int[] AbilitySequence;
+        private static Spell.Active Q;
+        private static Spell.Skillshot W;
+        private static Spell.Targeted E;
+        private static Spell.Targeted R;
+        private static Obj_AI_Base AllyTarget;
+        private static AIHeroClient EnemyTarget;
+        private static Vector3 InsecPos;
+        private static bool InsecActive;
         public static bool WtfSecActive;
-        public static long LastUpdate;
+        private static long LastUpdate;
         public static bool ShouldFlash;
 
-        public static AIHeroClient Player = ObjectManager.Player;
+        private static readonly AIHeroClient Player = ObjectManager.Player;
 
-        public static AIHeroClient InsecTarget = EnemyTarget;
+        private static readonly AIHeroClient InsecTarget = EnemyTarget;
 
         internal static void Main(string[] args)
         {
@@ -69,15 +69,13 @@ namespace Boostana
 
         private static void Obj_AI_Base_OnLevelUp(Obj_AI_Base sender, Obj_AI_BaseLevelUpEventArgs args)
         {
-            if (sender.IsMe)
-            {
-                Q = new Spell.Active(SpellSlot.Q, 543 + (7*(uint) Player.Level));
-                E = new Spell.Targeted(SpellSlot.E, 543 + (7*(uint) Player.Level));
-                R = new Spell.Targeted(SpellSlot.R, 543 + (7*(uint) Player.Level));
-            }
+            if (!sender.IsMe) return;
+            Q = new Spell.Active(SpellSlot.Q, 543 + (7*(uint) Player.Level));
+            E = new Spell.Targeted(SpellSlot.E, 543 + (7*(uint) Player.Level));
+            R = new Spell.Targeted(SpellSlot.R, 543 + (7*(uint) Player.Level));
         }
 
-        public static void GameOnDraw(EventArgs args)
+        private static void GameOnDraw(EventArgs args)
         {
             if (TristanaMenu.Nodraw()) return;
 
@@ -139,24 +137,22 @@ namespace Boostana
             Player.SetSkinId(TristanaMenu.SkinId());
         }
 
-        public static void LevelUpSpells()
+        private static void LevelUpSpells()
         {
             var qL = Player.Spellbook.GetSpell(SpellSlot.Q).Level + QOff;
             var wL = Player.Spellbook.GetSpell(SpellSlot.W).Level + WOff;
             var eL = Player.Spellbook.GetSpell(SpellSlot.E).Level + EOff;
             var rL = Player.Spellbook.GetSpell(SpellSlot.R).Level + ROff;
-            if (qL + wL + eL + rL < ObjectManager.Player.Level)
+            if (qL + wL + eL + rL >= ObjectManager.Player.Level) return;
+            int[] level = {0, 0, 0, 0};
+            for (var i = 0; i < ObjectManager.Player.Level; i++)
             {
-                int[] level = {0, 0, 0, 0};
-                for (var i = 0; i < ObjectManager.Player.Level; i++)
-                {
-                    level[AbilitySequence[i] - 1] = level[AbilitySequence[i] - 1] + 1;
-                }
-                if (qL < level[0]) ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
-                if (wL < level[1]) ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
-                if (eL < level[2]) ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
-                if (rL < level[3]) ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.R);
+                level[AbilitySequence[i] - 1] = level[AbilitySequence[i] - 1] + 1;
             }
+            if (qL < level[0]) ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+            if (wL < level[1]) ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+            if (eL < level[2]) ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+            if (rL < level[3]) ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.R);
         }
 
         private static void AntiGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
@@ -194,15 +190,13 @@ namespace Boostana
                     sender.Position.Distance(Player) <= 400)
                     R.Cast(khazix);
             }
-            if (rengar != null)
-            {
-                if (sender.Name == ("Rengar_LeapSound.troy") && TristanaMenu.GapcloserR3() &&
-                    sender.Position.Distance(Player) < R.Range)
-                    R.Cast(rengar);
-            }
+            if (rengar == null) return;
+            if (sender.Name == ("Rengar_LeapSound.troy") && TristanaMenu.GapcloserR3() &&
+                sender.Position.Distance(Player) < R.Range)
+                R.Cast(rengar);
         }
 
-        public static void Ignite()
+        private static void Ignite()
         {
             var autoIgnite = TargetSelector.GetTarget(MyActivator.Ignite.Range, DamageType.True);
             if (autoIgnite != null && autoIgnite.Health <= Player.GetSpellDamage(autoIgnite, MyActivator.Ignite.Slot) ||
@@ -210,7 +204,7 @@ namespace Boostana
                 MyActivator.Ignite.Cast(autoIgnite);
         }
 
-        public static void Heal()
+        private static void Heal()
         {
             if (MyActivator.Heal.IsReady() && Player.HealthPercent <= TristanaMenu.SpellsHealHp())
                 MyActivator.Heal.Cast();
@@ -250,7 +244,7 @@ namespace Boostana
             return TargetSelector.GetTarget(1400, DamageType.Physical);
         }
 
-        public static Vector3 GetBestInsecPos()
+        private static Vector3 GetBestInsecPos()
         {
             switch (TristanaMenu.MyCombo["insecPositionMode"].Cast<Slider>().CurrentValue)
             {
@@ -308,7 +302,7 @@ namespace Boostana
             EnemyTarget = null;
         }
 
-        public static void Insec()
+        private static void Insec()
         {
             var target = EnemyTarget;
 
@@ -395,7 +389,7 @@ namespace Boostana
             }
         }
 
-        public static void OnLaneClear()
+        private static void OnLaneClear()
         {
             var count =
                 EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.ServerPosition,
@@ -437,7 +431,7 @@ namespace Boostana
             }
         }
 
-        public static void OnJungle()
+        private static void OnJungle()
         {
             var source =
                 EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.ServerPosition, Q.Range)
