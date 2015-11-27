@@ -3,9 +3,10 @@ using EloBuddy.SDK.Menu.Values;
 
 namespace Boostana
 {
-    internal class TristanaMenu
+    internal static class TristanaMenu
     {
-        public static Menu MyMenu, MyCombo, MyDraw, MyHarass, MyActivator, MySpells, MyFarm, MyOtherFunctions;
+        private static Menu MyMenu;
+        public static Menu MyCombo, MyDraw, MyHarass, MyActivator, MySpells, MyFarm, MyOtherFunctions;
 
         public static void LoadMenu()
         {
@@ -18,7 +19,7 @@ namespace Boostana
             MyOtherFunctionsPage();
         }
 
-        public static void MyTristanaPage()
+        private static void MyTristanaPage()
         {
             MyMenu = MainMenu.AddMenu("Boostana", "main");
             MyMenu.AddGroupLabel("About this script:");
@@ -31,7 +32,7 @@ namespace Boostana
             MyMenu.AddLabel(" - Use the key T For Flee");
         }
 
-        public static void MyDrawPage()
+        private static void MyDrawPage()
         {
             MyDraw = MyMenu.AddSubMenu("Draw  settings", "Draw");
             MyDraw.AddGroupLabel("Draw Settings:");
@@ -47,7 +48,7 @@ namespace Boostana
             MyDraw.AddLabel(" - Uncheck the boxeses if you wish to dont see a specific draw");
         }
 
-        public static void MyComboPage()
+        private static void MyComboPage()
         {
             MyCombo = MyMenu.AddSubMenu("Combo settings", "Combo");
             MyCombo.AddGroupLabel("Combo settings:");
@@ -75,7 +76,7 @@ namespace Boostana
                 " -Uncheck the boxes if you wish to dont use a specific spell while you are pressing the Combo Key");
         }
 
-        public static void MyFarmPage()
+        private static void MyFarmPage()
         {
             MyFarm = MyMenu.AddSubMenu("Lane Clear Settings", "laneclear");
             MyFarm.AddGroupLabel("Lane clear settings:");
@@ -98,7 +99,7 @@ namespace Boostana
                 " -Uncheck the boxes if you wish to dont use a specific spell while you are pressing the Jungle/LaneClear Key");
         }
 
-        public static void MyHarassPage()
+        private static void MyHarassPage()
         {
             MyHarass = MyMenu.AddSubMenu("Harass/Killsteal Settings", "hksettings");
             MyHarass.AddGroupLabel("Harass Settings:");
@@ -115,7 +116,7 @@ namespace Boostana
             MyHarass.AddLabel(" -Remember to play safe and don't be a teemo");
         }
 
-        public static void MyActivatorPage()
+        private static void MyActivatorPage()
         {
             MyActivator = MyMenu.AddSubMenu("Items Settings", "Items");
             MyActivator.AddGroupLabel("Items usage:");
@@ -141,7 +142,7 @@ namespace Boostana
             MySpells.Add("spells.Ignite.Focus", new Slider("Use Ignite when target HP is lower than {0}(%)", 10, 1));
         }
 
-        public static void MyOtherFunctionsPage()
+        private static void MyOtherFunctionsPage()
         {
             MyOtherFunctions = MyMenu.AddSubMenu("Misc Menu", "othermenu");
             MyOtherFunctions.AddGroupLabel("Anti Gap Closer/Interrupt");
