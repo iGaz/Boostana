@@ -228,29 +228,16 @@ namespace Boostana
             }
             KillSteal();
             AutoE();
-            HunterPot();
-            HealPot();
-        }
-        public static void HunterPot()
-        {
-            if (!TristanaMenu.MyActivator["spells.Hunter.Check"].Cast<CheckBox>().CurrentValue)
-            {
-                return;
-            }
 
-            if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
+            if (TristanaMenu.SpellsHunterCheck() && Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
             {
                 MyActivator.HuntersPot.Cast();
             }
-        }
-        public static void HealPot()
-        {
-            if (Player.HealthPercent <= TristanaMenu.SpellsHealPotHP() && TristanaMenu.SpellsHealPotCheck() && MyActivator.RefillPotion.IsReady() && MyActivator.RefillPotion.IsOwned())
+            if (TristanaMenu.SpellsHealPotCheck() && Player.HealthPercent <= TristanaMenu.SpellsHealPotHP() && MyActivator.RefillPotion.IsReady() && MyActivator.RefillPotion.IsOwned())
             {
                 MyActivator.RefillPotion.Cast();
             }
         }
-
         private static Vector3 InterceptionPoint(List<Obj_AI_Base> heroes)
         {
             var result = new Vector3();
