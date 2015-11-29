@@ -233,6 +233,11 @@ namespace Boostana
         }
         public static void HunterPot()
         {
+            if (!TristanaMenu.MyActivator["spells.Hunter.Check"].Cast<CheckBox>().CurrentValue)
+            {
+                return;
+            }
+            
             if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && TristanaMenu.SpellsHunterCheck() && MyActivator.HuntersPot.IsReady())
             {
                 MyActivator.HuntersPot.Cast();
