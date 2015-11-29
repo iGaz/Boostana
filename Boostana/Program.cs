@@ -228,6 +228,33 @@ namespace Boostana
             }
             KillSteal();
             AutoE();
+            CorruptPot();
+            HunterPot();
+            HealPot();
+        }
+
+        public static void CorruptPot()
+        {
+            if (Player.HealthPercent <= KzKarthusMenu.SpellsCorruptHP() && Player.ManaPercent <= KzKarthusMenu.SpellsCorruptMana() && KzKarthusMenu.SpellsCorruptCheck() && MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
+            {
+                MyActivator.CorruptPot.Cast();
+            }
+        }
+
+        public static void HunterPot()
+        {
+            if (Player.HealthPercent <= KzKarthusMenu.SpellsHunterHP() && Player.ManaPercent <= KzKarthusMenu.SpellsHunterMana() && KzKarthusMenu.SpellsHunterCheck() && MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
+            {
+                MyActivator.HuntersPot.Cast();
+            }
+        }
+        public static void HealPot()
+        {
+            if (Player.HealthPercent <= KzKarthusMenu.SpellsHealPotHP() && KzKarthusMenu.SpellsHealPotCheck() && MyActivator.RefillPotion.IsReady() && MyActivator.RefillPotion.IsOwned())
+            {
+                MyActivator.RefillPotion.Cast();
+            }
+        }
         }
 
         private static Vector3 InterceptionPoint(List<Obj_AI_Base> heroes)
