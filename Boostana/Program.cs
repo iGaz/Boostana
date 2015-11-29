@@ -235,7 +235,7 @@ namespace Boostana
 
         public static void CorruptPot()
         {
-            if (Player.HealthPercent <= KzKarthusMenu.SpellsCorruptHP() && Player.ManaPercent <= KzKarthusMenu.SpellsCorruptMana() && KzKarthusMenu.SpellsCorruptCheck() && MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
+            if (Player.HealthPercent <= TristanaMenu.SpellsCorruptHP() && Player.ManaPercent <= TristanaMenu.SpellsCorruptMana() && TristanaMenu.SpellsCorruptCheck() && MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
             {
                 MyActivator.CorruptPot.Cast();
             }
@@ -243,14 +243,14 @@ namespace Boostana
 
         public static void HunterPot()
         {
-            if (Player.HealthPercent <= KzKarthusMenu.SpellsHunterHP() && Player.ManaPercent <= KzKarthusMenu.SpellsHunterMana() && KzKarthusMenu.SpellsHunterCheck() && MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
+            if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && TristanaMenu.SpellsHunterCheck() && MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
             {
                 MyActivator.HuntersPot.Cast();
             }
         }
         public static void HealPot()
         {
-            if (Player.HealthPercent <= KzKarthusMenu.SpellsHealPotHP() && KzKarthusMenu.SpellsHealPotCheck() && MyActivator.RefillPotion.IsReady() && MyActivator.RefillPotion.IsOwned())
+            if (Player.HealthPercent <= TristanaMenu.SpellsHealPotHP() && TristanaMenu.SpellsHealPotCheck() && MyActivator.RefillPotion.IsReady() && MyActivator.RefillPotion.IsOwned())
             {
                 MyActivator.RefillPotion.Cast();
             }
