@@ -255,7 +255,6 @@ namespace Boostana
                 MyActivator.RefillPotion.Cast();
             }
         }
-        }
 
         private static Vector3 InterceptionPoint(List<Obj_AI_Base> heroes)
         {
