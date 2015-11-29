@@ -235,7 +235,7 @@ namespace Boostana
 
         private static void CorruptPot()
         {
-            if (Player.HealthPercent <= TristanaMenu.SpellsCorruptHP() && Player.ManaPercent <= TristanaMenu.SpellsCorruptMana() && TristanaMenu.SpellsCorruptCheck() && MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
+            if (Player.HealthPercent <= TristanaMenu.SpellsCorruptHP() && Player.ManaPercent <= TristanaMenu.SpellsCorruptMana() && TristanaMenu.SpellsCorruptCheck() && MyActivator.CorruptPot.IsReady())
             {
                 MyActivator.CorruptPot.Cast();
             }
@@ -243,7 +243,7 @@ namespace Boostana
 
         private static void HunterPot()
         {
-            if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && TristanaMenu.SpellsHunterCheck() && MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
+            if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && TristanaMenu.SpellsHunterCheck() && MyActivator.HuntersPot.IsReady())
             {
                 MyActivator.HuntersPot.Cast();
             }
