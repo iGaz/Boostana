@@ -228,19 +228,9 @@ namespace Boostana
             }
             KillSteal();
             AutoE();
-            CorruptPot();
             HunterPot();
             HealPot();
         }
-
-        private static void CorruptPot()
-        {
-            if (Player.HealthPercent <= TristanaMenu.SpellsCorruptHP() && Player.ManaPercent <= TristanaMenu.SpellsCorruptMana() && TristanaMenu.SpellsCorruptCheck() && MyActivator.CorruptPot.IsReady())
-            {
-                MyActivator.CorruptPot.Cast();
-            }
-        }
-
         private static void HunterPot()
         {
             if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && TristanaMenu.SpellsHunterCheck() && MyActivator.HuntersPot.IsReady())
