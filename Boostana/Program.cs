@@ -238,7 +238,7 @@ namespace Boostana
                 return;
             }
             
-            if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && TristanaMenu.SpellsHunterCheck() && MyActivator.HuntersPot.IsReady())
+            if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && MyActivator.HuntersPot.IsReady())
             {
                 MyActivator.HuntersPot.Cast();
             }
