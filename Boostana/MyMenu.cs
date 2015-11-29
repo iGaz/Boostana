@@ -6,7 +6,7 @@ namespace Boostana
     internal static class TristanaMenu
     {
         private static Menu MyMenu;
-        public static Menu MyCombo, MyDraw, MyHarass, MyActivator, MySpells, MyFarm, MyOtherFunctions;
+        public static Menu MyCombo, MyDraw, MyHarass, MyActivator, MyFarm, MyOtherFunctions;
 
         public static void LoadMenu()
         {
@@ -134,24 +134,24 @@ namespace Boostana
             MyActivator.Add("youmus.Enemies",
                 new Slider("Use Youmus Ghostblade when there are {0} enemies in range", 3, 1, 5));
             MyActivator.AddSeparator();
-            MySpells.AddGroupLabel("Potion Settings");
-            MySpells.Add("spells.Corrupt.Check", new CheckBox("Corrupt Potion"));
-            MySpells.Add("spells.Corrupt.HP", new Slider("Use Corrupt Potion when HP is lower than {0}(%)", 60, 1, 100));
-            MySpells.Add("spells.Corrupt.Mana", new Slider("Use Corrupt Potion when Mana is lower than {0}(%)", 60, 1, 100));
-            MySpells.AddSeparator();
-            MySpells.Add("spells.Hunter.Check", new CheckBox("Hunter's Potion"));
-            MySpells.Add("spells.Hunter.HP", new Slider("Use Hunter's Potion when HP is lower than {0}(%)", 60, 1, 100));
-            MySpells.Add("spells.Hunter.Mana", new Slider("Use Hunter's Potion when Mana is lower than {0}(%)", 60, 1, 100));
-            MySpells.AddSeparator();
-            MySpells.Add("spells.HealPot.Check", new CheckBox("Health Potion"));
-            MySpells.Add("spells.HealPot.HP", new Slider("Use Heal Potion when Hp is lower than {0}(%)", 60, 1, 100));
-            MySpells.AddSeparator();
-            MySpells = MyMenu.AddSubMenu("Spells Settings");
-            MySpells.AddGroupLabel("Spells settings:");
-            MySpells.AddGroupLabel("Heal settings:");
-            MySpells.Add("spells.Heal.Hp", new Slider("Use Heal when HP is lower than {0}(%)", 30, 1));
-            MySpells.AddGroupLabel("Ignite settings:");
-            MySpells.Add("spells.Ignite.Focus", new Slider("Use Ignite when target HP is lower than {0}(%)", 10, 1));
+            MyActivator.AddGroupLabel("Potion Settings");
+            MyActivator.Add("spells.Corrupt.Check", new CheckBox("Corrupt Potion"));
+            MyActivator.Add("spells.Corrupt.HP", new Slider("Use Corrupt Potion when HP is lower than {0}(%)", 60, 1, 100));
+            MyActivator.Add("spells.Corrupt.Mana", new Slider("Use Corrupt Potion when Mana is lower than {0}(%)", 60, 1, 100));
+            MyActivator.AddSeparator();
+            MyActivator.Add("spells.Hunter.Check", new CheckBox("Hunter's Potion"));
+            MyActivator.Add("spells.Hunter.HP", new Slider("Use Hunter's Potion when HP is lower than {0}(%)", 60, 1, 100));
+            MyActivator.Add("spells.Hunter.Mana", new Slider("Use Hunter's Potion when Mana is lower than {0}(%)", 60, 1, 100));
+            MyActivator.AddSeparator();
+            MyActivator.Add("spells.HealPot.Check", new CheckBox("Health Potion"));
+            MyActivator.Add("spells.HealPot.HP", new Slider("Use Heal Potion when Hp is lower than {0}(%)", 60, 1, 100));
+            MyActivator.AddSeparator();
+            MyActivator = MyMenu.AddSubMenu("Spells Settings");
+            MyActivator.AddGroupLabel("Spells settings:");
+            MyActivator.AddGroupLabel("Heal settings:");
+            MyActivator.Add("spells.Heal.Hp", new Slider("Use Heal when HP is lower than {0}(%)", 30, 1));
+            MyActivator.AddGroupLabel("Ignite settings:");
+            MyActivator.Add("spells.Ignite.Focus", new Slider("Use Ignite when target HP is lower than {0}(%)", 10, 1));
         }
 
         private static void MyOtherFunctionsPage()
@@ -351,44 +351,44 @@ namespace Boostana
         }
         public static bool SpellsCorruptCheck()
         {
-            return MySpells["spells.Corrupt.Check"].Cast<CheckBox>().CurrentValue;
+            return MyActivator["spells.Corrupt.Check"].Cast<CheckBox>().CurrentValue;
         }
         public static float SpellsCorruptHP()
         {
-            return MySpells["spells.Corrupt.HP"].Cast<Slider>().CurrentValue;
+            return MyActivator["spells.Corrupt.HP"].Cast<Slider>().CurrentValue;
         }
         public static float SpellsCorruptMana()
         {
-            return MySpells["spells.Corrupt.Mana"].Cast<Slider>().CurrentValue;
+            return MyActivator["spells.Corrupt.Mana"].Cast<Slider>().CurrentValue;
         }
         public static bool SpellsHunterCheck()
         {
-            return MySpells["spells.Hunter.Check"].Cast<CheckBox>().CurrentValue;
+            return MyActivator["spells.Hunter.Check"].Cast<CheckBox>().CurrentValue;
         }
         public static float SpellsHunterMana()
         {
-            return MySpells["spells.Hunter.Mana"].Cast<Slider>().CurrentValue;
+            return MyActivator["spells.Hunter.Mana"].Cast<Slider>().CurrentValue;
         }
         public static float SpellsHunterHP()
         {
-            return MySpells["spells.Hunter.HP"].Cast<Slider>().CurrentValue;
+            return MyActivator["spells.Hunter.HP"].Cast<Slider>().CurrentValue;
         }
         public static bool SpellsHealPotCheck()
         {
-            return MySpells["spells.HealPot.Check"].Cast<CheckBox>().CurrentValue;
+            return MyActivator["spells.HealPot.Check"].Cast<CheckBox>().CurrentValue;
         }
         public static float SpellsHealPotHP()
         {
-            return MySpells["spells.HealPot.HP"].Cast<Slider>().CurrentValue;
+            return MyActivator["spells.HealPot.HP"].Cast<Slider>().CurrentValue;
         }
         public static float SpellsHealHp()
         {
-            return MySpells["spells.Heal.HP"].Cast<Slider>().CurrentValue;
+            return MyActivator["spells.Heal.HP"].Cast<Slider>().CurrentValue;
         }
 
         public static float SpellsIgniteFocus()
         {
-            return MySpells["spells.Ignite.Focus"].Cast<Slider>().CurrentValue;
+            return MyActivator["spells.Ignite.Focus"].Cast<Slider>().CurrentValue;
         }
 
         public static int SkinId()
