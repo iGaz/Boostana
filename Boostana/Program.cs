@@ -231,14 +231,14 @@ namespace Boostana
             HunterPot();
             HealPot();
         }
-        private static void HunterPot()
+        public static void HunterPot()
         {
             if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && TristanaMenu.SpellsHunterCheck() && MyActivator.HuntersPot.IsReady())
             {
                 MyActivator.HuntersPot.Cast();
             }
         }
-        private static void HealPot()
+        public static void HealPot()
         {
             if (Player.HealthPercent <= TristanaMenu.SpellsHealPotHP() && TristanaMenu.SpellsHealPotCheck() && MyActivator.RefillPotion.IsReady() && MyActivator.RefillPotion.IsOwned())
             {
