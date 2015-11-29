@@ -43,7 +43,7 @@ namespace Boostana
         private static void OnLoadingComplete(EventArgs args)
         {
             if (Player.ChampionName != "Tristana") return;
-            AbilitySequence = new[] {3, 2, 1, 3, 3, 4, 3, 1, 3, 1, 4, 1, 1, 2, 2, 4, 2, 2};
+            AbilitySequence = new[] { 3, 2, 1, 3, 3, 4, 3, 1, 3, 1, 4, 1, 1, 2, 2, 4, 2, 2 };
             Chat.Print("Boostana Loaded!", Color.CornflowerBlue);
             Chat.Print("Enjoy the game and DONT FLAME!", Color.Red);
             TristanaMenu.LoadMenu();
@@ -70,9 +70,9 @@ namespace Boostana
         private static void Obj_AI_Base_OnLevelUp(Obj_AI_Base sender, Obj_AI_BaseLevelUpEventArgs args)
         {
             if (!sender.IsMe) return;
-            Q = new Spell.Active(SpellSlot.Q, 543 + (7*(uint) Player.Level));
-            E = new Spell.Targeted(SpellSlot.E, 543 + (7*(uint) Player.Level));
-            R = new Spell.Targeted(SpellSlot.R, 543 + (7*(uint) Player.Level));
+            Q = new Spell.Active(SpellSlot.Q, 543 + (7 * (uint)Player.Level));
+            E = new Spell.Targeted(SpellSlot.E, 543 + (7 * (uint)Player.Level));
+            R = new Spell.Targeted(SpellSlot.R, 543 + (7 * (uint)Player.Level));
         }
 
         private static void GameOnDraw(EventArgs args)
@@ -92,38 +92,38 @@ namespace Boostana
             {
                 if (TristanaMenu.DrawingsQ())
                 {
-                    new Circle {Color = Color.AliceBlue, Radius = Q.Range, BorderWidth = 2f}.Draw(Player.Position);
+                    new Circle { Color = Color.AliceBlue, Radius = Q.Range, BorderWidth = 2f }.Draw(Player.Position);
                 }
                 if (TristanaMenu.DrawingsW())
                 {
-                    new Circle {Color = Color.OrangeRed, Radius = W.Range, BorderWidth = 2f}.Draw(Player.Position);
+                    new Circle { Color = Color.OrangeRed, Radius = W.Range, BorderWidth = 2f }.Draw(Player.Position);
                 }
                 if (TristanaMenu.DrawingsE())
                 {
-                    new Circle {Color = Color.Cyan, Radius = E.Range, BorderWidth = 2f}.Draw(Player.Position);
+                    new Circle { Color = Color.Cyan, Radius = E.Range, BorderWidth = 2f }.Draw(Player.Position);
                 }
                 if (TristanaMenu.DrawingsR())
                 {
-                    new Circle {Color = Color.SkyBlue, Radius = R.Range, BorderWidth = 2f}.Draw(Player.Position);
+                    new Circle { Color = Color.SkyBlue, Radius = R.Range, BorderWidth = 2f }.Draw(Player.Position);
                 }
             }
             else
             {
                 if (!Q.IsOnCooldown && TristanaMenu.DrawingsQ())
                 {
-                    new Circle {Color = Color.AliceBlue, Radius = 340, BorderWidth = 2f}.Draw(Player.Position);
+                    new Circle { Color = Color.AliceBlue, Radius = 340, BorderWidth = 2f }.Draw(Player.Position);
                 }
                 if (!W.IsOnCooldown && TristanaMenu.DrawingsW())
                 {
-                    new Circle {Color = Color.OrangeRed, Radius = 800, BorderWidth = 2f}.Draw(Player.Position);
+                    new Circle { Color = Color.OrangeRed, Radius = 800, BorderWidth = 2f }.Draw(Player.Position);
                 }
                 if (!E.IsOnCooldown && TristanaMenu.DrawingsE())
                 {
-                    new Circle {Color = Color.Cyan, Radius = 500, BorderWidth = 2f}.Draw(Player.Position);
+                    new Circle { Color = Color.Cyan, Radius = 500, BorderWidth = 2f }.Draw(Player.Position);
                 }
                 if (!R.IsOnCooldown && TristanaMenu.DrawingsR())
                 {
-                    new Circle {Color = Color.SkyBlue, Radius = 500, BorderWidth = 2f}.Draw(Player.Position);
+                    new Circle { Color = Color.SkyBlue, Radius = 500, BorderWidth = 2f }.Draw(Player.Position);
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace Boostana
             var eL = Player.Spellbook.GetSpell(SpellSlot.E).Level + EOff;
             var rL = Player.Spellbook.GetSpell(SpellSlot.R).Level + ROff;
             if (qL + wL + eL + rL >= ObjectManager.Player.Level) return;
-            int[] level = {0, 0, 0, 0};
+            int[] level = { 0, 0, 0, 0 };
             for (var i = 0; i < ObjectManager.Player.Level; i++)
             {
                 level[AbilitySequence[i] - 1] = level[AbilitySequence[i] - 1] + 1;
@@ -237,8 +237,8 @@ namespace Boostana
             {
                 return;
             }
-            
-            if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && MyActivator.HuntersPot.IsReady())
+
+            if (Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
             {
                 MyActivator.HuntersPot.Cast();
             }
@@ -374,7 +374,7 @@ namespace Boostana
                     EntityManager.Turrets.Enemies.FirstOrDefault(
                         a =>
                             !a.IsDead &&
-                            a.Distance(target2) <= 775 + Player.BoundingRadius + (target2.BoundingRadius/2) + 44.2);
+                            a.Distance(target2) <= 775 + Player.BoundingRadius + (target2.BoundingRadius / 2) + 44.2);
                 if (TristanaMenu.KillstealR() && R.IsReady() &&
                     target2.Health + target2.AttackShield <
                     Player.GetSpellDamage(target2, SpellSlot.R))
@@ -458,16 +458,16 @@ namespace Boostana
                 EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.ServerPosition, Q.Range)
                     .OrderByDescending(a => a.MaxHealth)
                     .FirstOrDefault();
-                    if (source == null) return;
+            if (source == null) return;
             if (Q.IsReady() && TristanaMenu.JungleQ() && source.Distance(Player) <= Q.Range)
             {
                 Q.Cast();
             }
             if (source != null)
                 if (W.IsReady() && TristanaMenu.JungleW() && source.Distance(Player) <= W.Range)
-            {
-                W.Cast(source.Position);
-            }
+                {
+                    W.Cast(source.Position);
+                }
             if (E.IsReady() && TristanaMenu.JungleE() && source.Distance(Player) <= E.Range)
             {
                 E.Cast(source);
@@ -523,7 +523,7 @@ namespace Boostana
                 if (TristanaMenu.ComboEr() && !E.IsReady() && R.IsReady() && targetBoom.IsValidTarget(R.Range) &&
                     (targetBoom.Health + targetBoom.AllShield + TristanaMenu.ComboEr1()) -
                     (Player.GetSpellDamage(targetBoom, SpellSlot.E) +
-                     (targetBoom.Buffs.Find(a => a.Name == "tristanaecharge").Count*
+                     (targetBoom.Buffs.Find(a => a.Name == "tristanaecharge").Count *
                       Player.GetSpellDamage(targetBoom, SpellSlot.E, DamageLibrary.SpellStages.Detonation))) <
                     Player.GetSpellDamage(targetBoom, SpellSlot.R))
                 {
