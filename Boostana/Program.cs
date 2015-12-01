@@ -263,13 +263,13 @@ namespace Boostana
             }
             KillSteal();
             AutoE();
-            if (TristanaMenu.spellsPotionsCheck() && !Player.IsInShopRange() && Player.HealthPercent <= TristanaMenu.spellsPotionsHP() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
+            if (TristanaMenu.spellsPotionsCheck() && !Player.IsInShopRange() && Player.HealthPercent <= TristanaMenu.spellsPotionsHP())
             {
-                if (MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
+                if (MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned() && !Player.HasBuff("ItemCrystalFlaskJungle"))
                 {
                     MyActivator.HuntersPot.Cast();
                 }
-                if (MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
+                if (MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned() && !Player.HasBuff("ItemDarkCrystalFlask"))
                 {
                     MyActivator.CorruptPot.Cast();
                 }
@@ -277,21 +277,14 @@ namespace Boostana
                 {
                     MyActivator.Biscuit.Cast();
                 }
-                if (MyActivator.HPPot.IsReady() && MyActivator.HPPot.IsOwned())
+                if (MyActivator.HPPot.IsReady() && MyActivator.HPPot.IsOwned() && !Player.HasBuff("RegenerationPotion"))
                 {
                     MyActivator.HPPot.Cast();
                 }
-                if (MyActivator.RefillPot.IsReady() && MyActivator.RefillPot.IsOwned())
+                if (MyActivator.RefillPot.IsReady() && MyActivator.RefillPot.IsOwned() && !Player.HasBuff("ItemMiniRegenPotion"))
                 {
                     MyActivator.RefillPot.Cast();
                 }
-            }
-            if (TristanaMenu.spellsPotionsCheck() && !Player.IsInShopRange() && Player.ManaPercent <= TristanaMenu.spellsPotionsM() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
-            {
-                if (MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
-                {
-                    MyActivator.CorruptPot.Cast();
-                } 
             }
         }
         private static Vector3 InterceptionPoint(List<Obj_AI_Base> heroes)
