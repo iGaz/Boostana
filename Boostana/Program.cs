@@ -89,6 +89,7 @@ namespace Boostana
             Obj_AI_Base.OnLevelUp += Obj_AI_Base_OnLevelUp;
             Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
             Gapcloser.OnGapcloser += AntiGapCloser;
+            Obj_AI_Base.OnBuffGain += OnBuffGain;
             GameObject.OnCreate += GameObject_OnCreate;
             Drawing.OnDraw += GameOnDraw;
         }
@@ -263,13 +264,13 @@ namespace Boostana
             }
             KillSteal();
             AutoE();
-            if (TristanaMenu.spellsPotionsCheck() && !Player.IsInShopRange() && Player.HealthPercent <= TristanaMenu.spellsPotionsHP())
+            if (TristanaMenu.SpellsPotionsCheck() && !Player.IsInShopRange() && Player.HealthPercent <= TristanaMenu.SpellsPotionsHP() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
             {
-                if (MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned() && !Player.HasBuff("ItemCrystalFlaskJungle"))
+                if (MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
                 {
                     MyActivator.HuntersPot.Cast();
                 }
-                if (MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned() && !Player.HasBuff("ItemDarkCrystalFlask"))
+                if (MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
                 {
                     MyActivator.CorruptPot.Cast();
                 }
@@ -277,16 +278,109 @@ namespace Boostana
                 {
                     MyActivator.Biscuit.Cast();
                 }
-                if (MyActivator.HPPot.IsReady() && MyActivator.HPPot.IsOwned() && !Player.HasBuff("RegenerationPotion"))
+                if (MyActivator.HPPot.IsReady() && MyActivator.HPPot.IsOwned())
                 {
                     MyActivator.HPPot.Cast();
                 }
-                if (MyActivator.RefillPot.IsReady() && MyActivator.RefillPot.IsOwned() && !Player.HasBuff("ItemMiniRegenPotion"))
+                if (MyActivator.RefillPot.IsReady() && MyActivator.RefillPot.IsOwned())
                 {
                     MyActivator.RefillPot.Cast();
                 }
             }
+            if (TristanaMenu.SpellsPotionsCheck() && !Player.IsInShopRange() && Player.ManaPercent <= TristanaMenu.SpellsPotionsM() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
+            {
+                if (MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
+                {
+                    MyActivator.CorruptPot.Cast();
+                } 
+            }
         }
+        private static void OnBuffGain(Obj_AI_Base sender, Obj_AI_BaseBuffGainEventArgs args)
+        {
+            if (!sender.IsMe) return;
+
+            if (args.Buff.Type == BuffType.Taunt && TristanaMenu.Taunt())
+            {
+                    DoQSS();
+            }
+            if (args.Buff.Type == BuffType.Stun && TristanaMenu.Stun())
+            {
+                    DoQSS();
+            }
+            if (args.Buff.Type == BuffType.Snare && TristanaMenu.Snare())
+            {
+                    DoQSS();
+            }
+            if (args.Buff.Type == BuffType.Polymorph && TristanaMenu.Polymorph())
+            {
+                    DoQSS();
+            }
+            if (args.Buff.Type == BuffType.Blind && TristanaMenu.Blind())
+            {
+                    DoQSS();
+            }
+            if (args.Buff.Type == BuffType.Flee && TristanaMenu.Fear())
+            {
+                    DoQSS();
+            }
+            if (args.Buff.Type == BuffType.Charm && TristanaMenu.Charm())
+            {
+                    DoQSS();
+            }
+            if (args.Buff.Type == BuffType.Suppression && TristanaMenu.Suppression())
+            {
+                    DoQSS();
+            }
+            if (args.Buff.Type == BuffType.Silence && TristanaMenu.Silence())
+            {
+                    DoQSS();
+            }
+            if (args.Buff.Name == "zedulttargetmark" && TristanaMenu.ZedUlt())
+            {
+                UltQSS();
+            }
+            if (args.Buff.Name == "VladimirHemoplague" && TristanaMenu.VladUlt())
+            {
+                UltQSS();
+            }
+            if (args.Buff.Name == "FizzMarinerDoom" && TristanaMenu.FizzUlt())
+            {
+                UltQSS();
+            }
+            if (args.Buff.Name == "MordekaiserChildrenOfTheGrave" && TristanaMenu.MordUlt())
+            {
+                UltQSS();
+            }
+            if (args.Buff.Name == "PoppyDiplomaticImmunity" && TristanaMenu.PoppyUlt())
+            {
+                UltQSS();
+            }
+        }
+        private static void DoQSS()
+        {
+            if (MyActivator.Qss.IsOwned() && MyActivator.Qss.IsReady())
+            {
+                MyActivator.Qss.Cast();
+            }
+
+            if (MyActivator.Mercurial.IsOwned() && MyActivator.Mercurial.IsReady())
+            {
+                MyActivator.Mercurial.Cast();
+            }
+        }
+        private static void UltQSS()
+        {
+            if (MyActivator.Qss.IsOwned() && MyActivator.Qss.IsReady())
+            {
+                MyActivator.Qss.Cast();
+            }
+
+            if (MyActivator.Mercurial.IsOwned() && MyActivator.Mercurial.IsReady())
+            {
+                MyActivator.Mercurial.Cast();
+            }
+        }
+
         private static Vector3 InterceptionPoint(List<Obj_AI_Base> heroes)
         {
             var result = new Vector3();
@@ -512,7 +606,6 @@ namespace Boostana
             {
                 Q.Cast();
             }
-            if (source != null)
                 if (W.IsReady() && TristanaMenu.JungleW() && source.Distance(Player) <= W.Range)
                 {
                     W.Cast(source.ServerPosition);
