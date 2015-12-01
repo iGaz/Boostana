@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
@@ -14,20 +15,33 @@ namespace Boostana
 {
     public static class Program
     {
-        public static string Version = "1.0.8.0";
+        //Here we type the version of the file, More comments = More visibility for MrArticuno fappa
+        //The string version is called in MyMenu Class where we type Program.Version 
+        public static string Version = "2.0.0.0"; 
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         private static int[] AbilitySequence;
+        //Now we set every spell like Q-W-E-R
+        //Q is an active spell (Let tristana attack speed goes 12938561281273x)
         private static Spell.Active Q;
+        //W is a SkillShot spell because we have to "normally" click with the mouse to the desired position
         private static Spell.Skillshot W;
+        //E is a Targeted spell, like ignite, we have to click on the enemy for fappa fappa BUM
         private static Spell.Targeted E;
+        //R is also a Targeted spell, Like E or Ignite, we have to KABUUUUUUUUUUUUM the enemy
         private static Spell.Targeted R;
+        //This works for find the Ally (Koka function but he is so nob for let insec works then we will check it)
         private static Obj_AI_Base AllyTarget;
+        //This works for find the target (Koka function but he is so nob for let insec works then we will check it)
         private static AIHeroClient EnemyTarget;
+        //This works for find the position for insec W+R (Koka function but he is so nob for let insec works then we will check it)
         private static Vector3 InsecPos;
+        //This works for check if the keybind is active (Koka function but he is so nob for let insec works then we will check it)
         private static bool InsecActive;
+        //I REALLY DONT KNOW WE WILL CHECK IT IN THE ADDON FAPPA
         public static bool WtfSecActive;
         private static long LastUpdate;
+        //I REALLY DONT KNOW WE WILL CHECK IT IN THE ADDON FAPPA
         public static bool ShouldFlash;
 
         private static readonly AIHeroClient Player = ObjectManager.Player;
@@ -40,20 +54,32 @@ namespace Boostana
             Bootstrap.Init(null);
         }
 
+
         private static void OnLoadingComplete(EventArgs args)
+        //Let's start with the addon, when the loading screen finished then the addon have to start.
         {
+            // With if player.ChampionName we are searching if out champion is Tristana, if we put != is If not tristana then Fack off
             if (Player.ChampionName != "Tristana") return;
+            //Abilitysequence is needed for my autolvlup, we will see it in the program
             AbilitySequence = new[] { 3, 2, 1, 3, 3, 4, 3, 1, 3, 1, 4, 1, 1, 2, 2, 4, 2, 2 };
+            //Like every nob addon, we want to write something in chat like our addon is loaded and some spam like this 
+            //Using Chat.Print helps you to write this, you can also choose how to type it with Color.Red like Annie bad days
             Chat.Print("Boostana Loaded!", Color.CornflowerBlue);
             Chat.Print("Enjoy the game and DONT FLAME!", Color.Red);
+            //We start to load every single thing we need for let the addon works properly or every file we have separately to this
             TristanaMenu.LoadMenu();
             Game.OnTick += GameOnTick;
             MyActivator.LoadSpells();
             Game.OnUpdate += OnGameUpdate;
 
             #region Skill
-
+            //As i said first, When we load the game we have also to set the skills right?
+            //Then let's do it with each skill 
+            //Q was active then we have to set it as active 
             Q = new Spell.Active(SpellSlot.Q, 550);
+            //W was a skillshot, precisely a circular one so we have to write Spell.Skillshot
+            //For the skillshot we have to define if it is linear, circual or madafaker
+            //We call it by SkillShotType
             W = new Spell.Skillshot(SpellSlot.W, 900, SkillShotType.Circular, 450, int.MaxValue, 180);
             E = new Spell.Targeted(SpellSlot.E, 550);
             R = new Spell.Targeted(SpellSlot.R, 550);
@@ -130,6 +156,8 @@ namespace Boostana
 
         private static void OnGameUpdate(EventArgs args)
         {
+            if (MyActivator.Barrier != null)
+                Barrier();
             if (MyActivator.Heal != null)
                 Heal();
             if (MyActivator.Ignite != null)
@@ -196,6 +224,12 @@ namespace Boostana
                 R.Cast(rengar);
         }
 
+        private static void Barrier()
+        {
+            if (Player.IsFacing(Target) && MyActivator.Barrier.IsReady() && Player.HealthPercent <= TristanaMenu.spellsBarrierHP())
+                MyActivator.Barrier.Cast();
+        }
+           
         private static void Ignite()
         {
             var autoIgnite = TargetSelector.GetTarget(MyActivator.Ignite.Range, DamageType.True);
@@ -222,20 +256,42 @@ namespace Boostana
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)) OnHarrass();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)) OnLaneClear();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) OnJungle();
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee)) OnFlee();
             if (TristanaMenu.MyCombo["combo.WR"].Cast<KeyBind>().CurrentValue)
             {
                 Insec();
             }
             KillSteal();
             AutoE();
-
-            if (TristanaMenu.SpellsHunterCheck() && Player.HealthPercent <= TristanaMenu.SpellsHunterHP() && Player.ManaPercent <= TristanaMenu.SpellsHunterMana() && MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
+            if (TristanaMenu.spellsPotionsCheck() && !Player.IsInShopRange() && Player.HealthPercent <= TristanaMenu.spellsPotionsHP() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
             {
-                MyActivator.HuntersPot.Cast();
+                if (MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
+                {
+                    MyActivator.HuntersPot.Cast();
+                }
+                if (MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
+                {
+                    MyActivator.CorruptPot.Cast();
+                }
+                if (MyActivator.Biscuit.IsReady() && MyActivator.Biscuit.IsOwned())
+                {
+                    MyActivator.Biscuit.Cast();
+                }
+                if (MyActivator.HPPot.IsReady() && MyActivator.HPPot.IsOwned())
+                {
+                    MyActivator.HPPot.Cast();
+                }
+                if (MyActivator.RefillPot.IsReady() && MyActivator.RefillPot.IsOwned())
+                {
+                    MyActivator.RefillPot.Cast();
+                }
             }
-            if (TristanaMenu.SpellsHealPotCheck() && Player.HealthPercent <= TristanaMenu.SpellsHealPotHP() && MyActivator.RefillPotion.IsReady() && MyActivator.RefillPotion.IsOwned())
+            if (TristanaMenu.spellsPotionsCheck() && !Player.IsInShopRange() && Player.ManaPercent <= TristanaMenu.spellsPotionsM() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
             {
-                MyActivator.RefillPotion.Cast();
+                if (MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
+                {
+                    MyActivator.CorruptPot.Cast();
+                } 
             }
         }
         private static Vector3 InterceptionPoint(List<Obj_AI_Base> heroes)
@@ -397,6 +453,17 @@ namespace Boostana
             }
         }
 
+        private static void OnFlee()
+        {
+            if (W.IsReady() && Player.ManaPercent >= TristanaMenu.FleeM())
+            {
+                W.Cast(Player.Position.Extend(Game.CursorPos, W.Range).To3D()); //Surely not stole from MarioGK 
+            }
+            if (R.IsReady() && Player.HealthPercent <= TristanaMenu.FleeHP())
+            {
+                R.Cast(Target);
+            }
+        }
         private static void OnLaneClear()
         {
             var count =
@@ -414,6 +481,7 @@ namespace Boostana
                 Player.ManaPercent >= TristanaMenu.LcM())
             {
                 E.Cast(source);
+                Orbwalker.ForcedTarget = sourceE;
             }
             if (Q.IsReady() && TristanaMenu.LcQ() && source.IsValidTarget(Q.Range) &&
                 Player.ManaPercent >= TristanaMenu.LcM())
@@ -430,6 +498,7 @@ namespace Boostana
                 Player.ManaPercent >= TristanaMenu.LcM())
             {
                 E.Cast(tawah);
+
             }
 
             if (TristanaMenu.LcQ() && tawah.IsInRange(Player, Q.Range) && Q.IsReady() &&
@@ -501,7 +570,7 @@ namespace Boostana
                 Q.Cast();
             }
             if (TristanaMenu.ComboW() && W.IsReady() && target.IsValidTarget(W.Range) &&
-                target.Position.CountEnemiesInRange(800) <= TristanaMenu.ComboW1())
+                target.Position.CountEnemiesInRange(800) <= TristanaMenu.ComboW1() )
             {
                 W.Cast(target.Position);
             }
