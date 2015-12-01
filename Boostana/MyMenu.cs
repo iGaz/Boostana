@@ -151,7 +151,7 @@ namespace Boostana
         private static void MyActivatorPage()
         {
             MyActivator = MyMenu.AddSubMenu("Activator Settings", "Items");
-            MyActivator.AddGroupLabel("Auto QSS if :");
+            MyActivator.AddGroupLabel("Auto QSS :");
             MyActivator.Add("Blind",
                 new CheckBox("Blind", false));
             MyActivator.Add("Charm",
