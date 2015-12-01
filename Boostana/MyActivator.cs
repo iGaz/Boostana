@@ -6,7 +6,7 @@ namespace Boostana
     internal static class MyActivator
     {
         public static Spell.Targeted Ignite;
-        public static Item Youmus, Botrk, Bilgewater, CorruptPot, HuntersPot, RefillPot, Biscuit, HPPot;
+        public static Item Youmus, Botrk, Bilgewater, CorruptPot, HuntersPot, RefillPot, Biscuit, HPPot, Qss, Mercurial;
         public static Spell.Active Heal, Barrier;
         public static void LoadSpells()
         {
@@ -25,6 +25,8 @@ namespace Boostana
             Youmus = new Item((int)ItemId.Youmuus_Ghostblade);
             Botrk = new Item((int)ItemId.Blade_of_the_Ruined_King);
             Bilgewater = new Item((int)ItemId.Bilgewater_Cutlass);
+            Qss = new Item((int)ItemId.Quicksilver_Sash);
+            Mercurial = new Item((int)ItemId.Mercurial_Scimitar);
             HPPot = new Item(2003);
             Biscuit = new Item(2010);
             CorruptPot = new Item(2033);
