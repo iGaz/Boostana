@@ -170,7 +170,6 @@ namespace Boostana
                 new CheckBox("Taunt"));
             MyActivator.Add("Suppression",
                 new CheckBox("Suppression"));
-            MyActivator.AddGroupLabel("Ults");
             MyActivator.Add("ZedUlt", 
                 new CheckBox("Zed Ult"));
             MyActivator.Add("VladUlt",
