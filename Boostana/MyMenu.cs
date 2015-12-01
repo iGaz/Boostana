@@ -36,13 +36,19 @@ namespace Boostana
         {
             MyDraw = MyMenu.AddSubMenu("Draw  settings", "Draw");
             MyDraw.AddGroupLabel("Draw Settings:");
-            MyDraw.Add("nodraw", new CheckBox("No Display Drawing", false));
-            MyDraw.Add("onlyReady", new CheckBox("Display only Ready"));
+            MyDraw.Add("nodraw", 
+                new CheckBox("No Display Drawing", false));
+            MyDraw.Add("onlyReady", 
+                new CheckBox("Display only Ready"));
             MyDraw.AddSeparator();
-            MyDraw.Add("draw.Q", new CheckBox("Draw Rapid Fire Range (Q Spell)"));
-            MyDraw.Add("draw.W", new CheckBox("Draw Rocket Jump Range (W Spell)"));
-            MyDraw.Add("draw.E", new CheckBox("Draw Explosive Charge Range (E Spell)"));
-            MyDraw.Add("draw.R", new CheckBox("Draw Buster Shot Range (R Spell)"));
+            MyDraw.Add("draw.Q", 
+                new CheckBox("Draw Rapid Fire Range (Q Spell)"));
+            MyDraw.Add("draw.W", 
+                new CheckBox("Draw Rocket Jump Range (W Spell)"));
+            MyDraw.Add("draw.E", 
+                new CheckBox("Draw Explosive Charge Range (E Spell)"));
+            MyDraw.Add("draw.R", 
+                new CheckBox("Draw Buster Shot Range (R Spell)"));
             MyDraw.AddSeparator();
             MyDraw.AddGroupLabel("Pro Tips");
             MyDraw.AddLabel(" - Uncheck the boxeses if you wish to dont see a specific draw");
@@ -52,21 +58,33 @@ namespace Boostana
         {
             MyCombo = MyMenu.AddSubMenu("Combo settings", "Combo");
             MyCombo.AddGroupLabel("Combo settings:");
-            MyCombo.Add("combo.Q", new CheckBox("Use Rapid Fire (Q Spell)"));
-            MyCombo.Add("combo.W", new CheckBox("Use Rocket Jump (W Spell)", false));
-            MyCombo.Add("combo.E", new CheckBox("Use Explosive Charge (E Spell)"));
-            MyCombo.Add("combo.R", new CheckBox("Use Buster Shot (R Spell)"));
+            MyCombo.Add("combo.Q", 
+                new CheckBox("Use Rapid Fire (Q Spell)"));
+            MyCombo.Add("combo.W", 
+                new CheckBox("Use Rocket Jump (W Spell)", false));
+            MyCombo.Add("combo.E", 
+                new CheckBox("Use Explosive Charge (E Spell)"));
+            MyCombo.Add("combo.R", 
+                new CheckBox("Use Buster Shot (R Spell)"));
             MyCombo.AddSeparator();
             MyCombo.AddGroupLabel("Combo preferences:");
-            MyCombo.Add("combo.CC", new CheckBox("Use Explosive Charge (E Spell) on CC"));
-            MyCombo.Add("combo.ER", new CheckBox("Use Explosive Charge + Buster Shot Finisher"));
-            MyCombo.Add("combo.ER1", new Slider("Explosive Charge + Buster Shot Overkill", 60, 0, 500));
-            MyCombo.Add("combo.R1", new Slider("Buster Shot OverKill", 50, 0, 500));
-            MyCombo.Add("combo.W1", new Slider("Max enemies for the Rocket Jump (W Spell)", 3, 0, 5));
+            MyCombo.Add("combo.CC", 
+                new CheckBox("Use Explosive Charge (E Spell) on CC"));
+            MyCombo.Add("combo.ER", 
+                new CheckBox("Use Explosive Charge + Buster Shot Finisher"));
+            MyCombo.Add("combo.ER1", 
+                new Slider("Explosive Charge + Buster Shot Overkill", 60, 0, 500));
+            MyCombo.Add("combo.R1", 
+                new Slider("Buster Shot OverKill", 50, 0, 500));
+            MyCombo.Add("combo.W1", 
+                new Slider("Max enemies for the Rocket Jump (W Spell)", 3, 0, 5));
             MyCombo.AddSeparator();
-            MyCombo.Add("insecPositionMode", new Slider("Insec Postion Mode", 2, 0, 2));
-            MyCombo.Add("insecDistancee", new Slider("Insec Distance", 200, 100, 350));
-            MyCombo.Add("combo.W3", new Slider("Rocket Jump Overkill", 50, 0, 500));
+            MyCombo.Add("insecPositionMode", 
+                new Slider("Insec Postion Mode", 2, 0, 2));
+            MyCombo.Add("insecDistancee", 
+                new Slider("Insec Distance", 200, 100, 350));
+            MyCombo.Add("combo.W3", 
+                new Slider("Rocket Jump Overkill", 50, 0, 500));
             MyCombo.AddSeparator();
             MyCombo.Add("combo.WR",
                 new KeyBind("Use Rocket Jump + Buster Shot for Insec", false, KeyBind.BindTypes.HoldActive, 92));
@@ -80,19 +98,28 @@ namespace Boostana
         {
             MyFarm = MyMenu.AddSubMenu("Lane Clear Settings", "laneclear");
             MyFarm.AddGroupLabel("Lane clear settings:");
-            MyFarm.Add("lc.Q", new CheckBox("Use Rapid Fire (Q Spell)"));
+            MyFarm.Add("lc.Q", 
+                new CheckBox("Use Rapid Fire (Q Spell)"));
             MyFarm.AddSeparator();
-            MyFarm.Add("lc.W", new CheckBox("Use Rocket Jump (W Spell)", false));
-            MyFarm.Add("lc.W1", new Slider("Min. Minions for Rocket Jump", 3, 0, 10));
+            MyFarm.Add("lc.W", 
+                new CheckBox("Use Rocket Jump (W Spell)", false));
+            MyFarm.Add("lc.W1", 
+                new Slider("Min. Minions for Rocket Jump", 3, 0, 10));
             MyFarm.AddSeparator();
-            MyFarm.Add("lc.E", new CheckBox("Use Explosive Charge (E Spell)", false));
-            MyFarm.Add("lc.E1", new CheckBox("Use Explosive Charge (E Spell) on Tower", false));
-            MyFarm.Add("lc.M", new Slider("Min. Mana for Laneclear Spells %", 30));
+            MyFarm.Add("lc.E", 
+                new CheckBox("Use Explosive Charge (E Spell)", false));
+            MyFarm.Add("lc.E1",
+                new CheckBox("Use Explosive Charge (E Spell) on Tower", false));
+            MyFarm.Add("lc.M", 
+                new Slider("Min. Mana for Laneclear Spells %", 30));
             MyFarm.AddSeparator();
             MyFarm.AddGroupLabel("Jungle Settings");
-            MyFarm.Add("jungle.Q", new CheckBox("Use Rapid Fire in Jungle (Q Spell)"));
-            MyFarm.Add("jungle.W", new CheckBox("Use Rocket Jump in Jungle (W Spell)"));
-            MyFarm.Add("jungle.E", new CheckBox("Use Explosive Charge in Jungle (E Spell)"));
+            MyFarm.Add("jungle.Q", 
+                new CheckBox("Use Rapid Fire in Jungle (Q Spell)"));
+            MyFarm.Add("jungle.W", 
+                new CheckBox("Use Rocket Jump in Jungle (W Spell)"));
+            MyFarm.Add("jungle.E", 
+                new CheckBox("Use Explosive Charge in Jungle (E Spell)"));
             MyFarm.AddSeparator();
             MyFarm.AddGroupLabel("Pro Tips");
             MyFarm.AddLabel(
@@ -104,13 +131,18 @@ namespace Boostana
             MyHarass = MyMenu.AddSubMenu("Harass/Killsteal Settings", "hksettings");
             MyHarass.AddGroupLabel("Harass Settings:");
             MyHarass.AddSeparator();
-            MyHarass.Add("harass.Q", new CheckBox("Use Rapid Fire (Q Spell)", false));
-            MyHarass.Add("harass.E", new CheckBox("Use Explosive Charge (E Spell)", false));
-            MyHarass.Add("harass.QE", new Slider("Min. Mana for Harass Spells %", 35));
+            MyHarass.Add("harass.Q", 
+                new CheckBox("Use Rapid Fire (Q Spell)", false));
+            MyHarass.Add("harass.E", 
+                new CheckBox("Use Explosive Charge (E Spell)", false));
+            MyHarass.Add("harass.QE", 
+                new Slider("Min. Mana for Harass Spells %", 35));
             MyHarass.AddSeparator();
             MyHarass.AddGroupLabel("KillSteal Settings:");
-            MyHarass.Add("killsteal.W", new CheckBox("Use Rocket Jump (W Spell)", false));
-            MyHarass.Add("killsteal.R", new CheckBox("Use Buster Shot (R Spell)"));
+            MyHarass.Add("killsteal.W", 
+                new CheckBox("Use Rocket Jump (W Spell)", false));
+            MyHarass.Add("killsteal.R", 
+                new CheckBox("Use Buster Shot (R Spell)"));
             MyHarass.AddSeparator();
             MyHarass.AddGroupLabel("Pro Tips");
             MyHarass.AddLabel(" -Remember to play safe and don't be a teemo");
@@ -121,51 +153,69 @@ namespace Boostana
             MyActivator = MyMenu.AddSubMenu("Items Settings", "Items");
             MyActivator.AddGroupLabel("Items usage:");
             MyActivator.AddSeparator();
-            MyActivator.Add("bilgewater", new CheckBox("Use Bilgewater Cutlass"));
-            MyActivator.Add("bilgewater.HP", new Slider("Use Bilgewater Cutlass if hp is lower than {0}(%)", 60));
+            MyActivator.Add("bilgewater", 
+                new CheckBox("Use Bilgewater Cutlass"));
+            MyActivator.Add("bilgewater.HP", 
+                new Slider("Use Bilgewater Cutlass if hp is lower than {0}(%)", 60));
             MyActivator.AddSeparator();
-            MyActivator.Add("botrk", new CheckBox("Use Blade of The Ruined King"));
+            MyActivator.Add("botrk", 
+                new CheckBox("Use Blade of The Ruined King"));
             MyActivator.Add("botrk.HP",
                 new Slider("Use Blade of The Ruined King if hp is lower than {0}(%)", 60));
             MyActivator.AddSeparator();
-            MyActivator.Add("youmus", new CheckBox("Use Youmus Ghostblade"));
+            MyActivator.Add("youmus", 
+                new CheckBox("Use Youmus Ghostblade"));
             MyActivator.Add("items.Youmuss.HP",
                 new Slider("Use Youmuss Ghostblade if hp is lower than {0}(%)", 60, 1));
             MyActivator.Add("youmus.Enemies",
                 new Slider("Use Youmus Ghostblade when there are {0} enemies in range", 3, 1, 5));
             MyActivator.AddSeparator();
             MyActivator.AddGroupLabel("Potion Settings");
-            MyActivator.Add("spells.Potions.Check", new CheckBox("Use Potions"));
-            MyActivator.Add("spells.Potions.HP", new Slider("Use Potions when HP is lower than {0}(%)", 60, 1));
-            MyActivator.Add("spells.Potions.Mana", new Slider("Use Potions when Mana is lower than {0}(%)", 60, 1));
+            MyActivator.Add("spells.Potions.Check", 
+                new CheckBox("Use Potions"));
+            MyActivator.Add("spells.Potions.HP", 
+                new Slider("Use Potions when HP is lower than {0}(%)", 60, 1));
+            MyActivator.Add("spells.Potions.Mana", 
+                new Slider("Use Potions when Mana is lower than {0}(%)", 60, 1));
             MyActivator.AddSeparator();
             MyActivator = MyMenu.AddSubMenu("Spells Settings");
             MyActivator.AddGroupLabel("Spells settings:");
             MyActivator.AddGroupLabel("Barrier settings:");
-            MyActivator.Add("spells.Barrier.Hp", new Slider("Use Barrier when HP is lower than {0}(%)", 30, 1));
+            MyActivator.Add("spells.Barrier.Hp", 
+                new Slider("Use Barrier when HP is lower than {0}(%)", 30, 1));
             MyActivator.AddGroupLabel("Heal settings:");
-            MyActivator.Add("spells.Heal.Hp", new Slider("Use Heal when HP is lower than {0}(%)", 30, 1));
+            MyActivator.Add("spells.Heal.Hp", 
+                new Slider("Use Heal when HP is lower than {0}(%)", 30, 1));
             MyActivator.AddGroupLabel("Ignite settings:");
-            MyActivator.Add("spells.Ignite.Focus", new Slider("Use Ignite when target HP is lower than {0}(%)", 10, 1));
+            MyActivator.Add("spells.Ignite.Focus", 
+                new Slider("Use Ignite when target HP is lower than {0}(%)", 10, 1));
         }
 
         private static void MyOtherFunctionsPage()
         {
             MyOtherFunctions = MyMenu.AddSubMenu("Misc Menu", "othermenu");
             MyOtherFunctions.AddGroupLabel("Settings for Flee");
-            MyOtherFunctions.Add("flee.HP",new Slider("Use Buster Shot (R Spell) for flee if HP is lower than {0}(%)", 10, 1));
-            MyOtherFunctions.Add("flee.M", new Slider("Use Rocket Jump for Flee if mana is higher than {0}(%)", 10, 1));
+            MyOtherFunctions.Add("flee.HP",
+                new Slider("Use Buster Shot (R Spell) for flee if HP is lower than {0}(%)", 10, 1));
+            MyOtherFunctions.Add("flee.M", 
+                new Slider("Use Rocket Jump for Flee if mana is higher than {0}(%)", 10, 1));
             MyOtherFunctions.AddGroupLabel("Anti Gap Closer/Interrupt");
-            MyOtherFunctions.Add("gapcloser.R", new CheckBox("Buster Shot (R Spell)"));
-            MyOtherFunctions.Add("gapcloser.R1", new CheckBox("Buster Shot (R Spell) to Interrupt"));
-            MyOtherFunctions.Add("gapcloser.R2", new CheckBox("Buster Shot (R Spell) to Peel from Khazix"));
-            MyOtherFunctions.Add("gapcloser.R3", new CheckBox("Buster Shot (R Spell) to Peel from Rengar"));
+            MyOtherFunctions.Add("gapcloser.R", 
+                new CheckBox("Buster Shot (R Spell)"));
+            MyOtherFunctions.Add("gapcloser.R1",
+                new CheckBox("Buster Shot (R Spell) to Interrupt"));
+            MyOtherFunctions.Add("gapcloser.R2", 
+                new CheckBox("Buster Shot (R Spell) to Peel from Khazix"));
+            MyOtherFunctions.Add("gapcloser.R3", 
+                new CheckBox("Buster Shot (R Spell) to Peel from Rengar"));
             MyOtherFunctions.AddSeparator();
             MyOtherFunctions.AddGroupLabel("Level Up Function");
-            MyOtherFunctions.Add("lvlup", new CheckBox("Auto Level Up Spells:", false));
+            MyOtherFunctions.Add("lvlup", 
+                new CheckBox("Auto Level Up Spells:", false));
             MyOtherFunctions.AddSeparator();
             MyOtherFunctions.AddGroupLabel("Skin settings");
-            MyOtherFunctions.Add("skin.Id", new Slider("Skin Editor", 3, 1, 6));
+            MyOtherFunctions.Add("skin.Id", 
+                new Slider("Skin Editor", 3, 1, 6));
         }
 
         public static bool Nodraw()
