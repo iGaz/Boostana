@@ -150,7 +150,37 @@ namespace Boostana
 
         private static void MyActivatorPage()
         {
-            MyActivator = MyMenu.AddSubMenu("Items Settings", "Items");
+            MyActivator = MyMenu.AddSubMenu("Activator Settings", "Items");
+            MyActivator.AddGroupLabel("Auto QSS if :");
+            MyActivator.Add("Blind",
+                new CheckBox("Blind", false));
+            MyActivator.Add("Charm",
+                new CheckBox("Charm"));
+            MyActivator.Add("Fear", 
+                new CheckBox("Fear"));
+            MyActivator.Add("Polymorph", 
+                new CheckBox("Polymorph"));
+            MyActivator.Add("Stun", 
+                new CheckBox("Stun"));
+            MyActivator.Add("Snare", 
+                new CheckBox("Snare"));
+            MyActivator.Add("Silence", 
+                new CheckBox("Silence", false));
+            MyActivator.Add("Taunt", 
+                new CheckBox("Taunt"));
+            MyActivator.Add("Suppression",
+                new CheckBox("Suppression"));
+            MyActivator.AddGroupLabel("Ults");
+            MyActivator.Add("ZedUlt", 
+                new CheckBox("Zed Ult"));
+            MyActivator.Add("VladUlt",
+                new CheckBox("Vlad Ult"));
+            MyActivator.Add("FizzUlt",
+                new CheckBox("Fizz Ult"));
+            MyActivator.Add("MordUlt", 
+                new CheckBox("Mordekaiser Ult"));
+            MyActivator.Add("PoppyUlt", 
+                new CheckBox("Poppy Ult"));
             MyActivator.AddGroupLabel("Items usage:");
             MyActivator.AddSeparator();
             MyActivator.Add("bilgewater", 
@@ -174,10 +204,11 @@ namespace Boostana
             MyActivator.Add("spells.Potions.Check", 
                 new CheckBox("Use Potions"));
             MyActivator.Add("spells.Potions.HP", 
-                new Slider("Use Potions when HP is lower than {0}(%)", 60, 1, 100));
+                new Slider("Use Potions when HP is lower than {0}(%)", 60, 1));
             MyActivator.Add("spells.Potions.Mana", 
-                new Slider("Use Potions when Mana is lower than {0}(%)", 60, 1, 100));
+                new Slider("Use Potions when Mana is lower than {0}(%)", 60, 1));
             MyActivator.AddSeparator();
+            MyActivator = MyMenu.AddSubMenu("Spells Settings");
             MyActivator.AddGroupLabel("Spells settings:");
             MyActivator.AddGroupLabel("Barrier settings:");
             MyActivator.Add("spells.Barrier.Hp", 
@@ -396,15 +427,15 @@ namespace Boostana
         {
             return MyActivator["items.Youmuss.HP"].Cast<Slider>().CurrentValue;
         }
-        public static bool spellsPotionsCheck()
+        public static bool SpellsPotionsCheck()
         {
             return MyActivator["spells.Potions.Check"].Cast<CheckBox>().CurrentValue;
         }
-        public static float spellsPotionsHP()
+        public static float SpellsPotionsHP()
         {
             return MyActivator["spells.Potions.HP"].Cast<Slider>().CurrentValue;
         }
-        public static float spellsPotionsM()
+        public static float SpellsPotionsM()
         {
             return MyActivator["spells.Potions.Mana"].Cast<Slider>().CurrentValue;
         }
@@ -421,6 +452,75 @@ namespace Boostana
         public static float spellsBarrierHP()
         {
             return MyActivator["spells.Barrier.Hp"].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool Blind()
+        {
+            return MyActivator["Blind"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool Charm()
+        {
+            return MyActivator["Charm"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool Fear()
+        {
+            return MyActivator["Fear"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool Polymorph()
+        {
+            return MyActivator["Polymorph"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool Stun()
+        {
+            return MyActivator["Stun"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool Snare()
+        {
+            return MyActivator["Snare"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool Silence()
+        {
+            return MyActivator["Silence"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool Taunt()
+        {
+            return MyActivator["Taunt"].Cast<CheckBox>().CurrentValue;
+        }
+        public static bool Suppression()
+        {
+            return MyActivator["Suppression"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool ZedUlt()
+        {
+            return MyActivator["ZedUlt"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool VladUlt()
+        {
+            return MyActivator["VladUlt"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool FizzUlt()
+        {
+            return MyActivator["FizzUlt"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool MordUlt()
+        {
+            return MyActivator["MordUlt"].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static bool PoppyUlt()
+        {
+            return MyActivator["PoppyUlt"].Cast<CheckBox>().CurrentValue;
         }
 
         public static int SkinId()
