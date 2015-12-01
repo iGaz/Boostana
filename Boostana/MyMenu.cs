@@ -178,7 +178,6 @@ namespace Boostana
             MyActivator.Add("spells.Potions.Mana", 
                 new Slider("Use Potions when Mana is lower than {0}(%)", 60, 1, 100));
             MyActivator.AddSeparator();
-            MyActivator = MyMenu.AddSubMenu("Spells Settings");
             MyActivator.AddGroupLabel("Spells settings:");
             MyActivator.AddGroupLabel("Barrier settings:");
             MyActivator.Add("spells.Barrier.Hp", 
