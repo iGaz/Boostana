@@ -457,7 +457,7 @@ namespace Boostana
         {
             if (W.IsReady() && Player.ManaPercent >= TristanaMenu.FleeM())
             {
-                W.Cast(Player.Position.Extend(Game.CursorPos, W.Range).To3D()); //Surely not stole from MarioGK 
+                W.Cast(Player.ServerPosition.Extend(Game.CursorPos, W.Range).To3D()); //Surely not stole from MarioGK 
             }
             if (R.IsReady() && Player.HealthPercent <= TristanaMenu.FleeHP())
             {
@@ -522,7 +522,7 @@ namespace Boostana
             if (source != null)
                 if (W.IsReady() && TristanaMenu.JungleW() && source.Distance(Player) <= W.Range)
                 {
-                    W.Cast(source.Position);
+                    W.Cast(source.ServerPosition);
                 }
             if (E.IsReady() && TristanaMenu.JungleE() && source.Distance(Player) <= E.Range)
             {
@@ -572,7 +572,7 @@ namespace Boostana
             if (TristanaMenu.ComboW() && W.IsReady() && target.IsValidTarget(W.Range) &&
                 target.Position.CountEnemiesInRange(800) <= TristanaMenu.ComboW1() )
             {
-                W.Cast(target.Position);
+                W.Cast(target.ServerPosition);
             }
 
             if (targetBoom != null)
