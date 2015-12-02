@@ -17,7 +17,7 @@ namespace Boostana
     {
         //Here we type the version of the file, More comments = More visibility for MrArticuno fappa
         //The string version is called in MyMenu Class where we type Program.Version 
-        public static string Version = "2.0.0.0"; 
+        public static string Version = "2.0.0.1"; 
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         private static int[] AbilitySequence;
@@ -639,6 +639,12 @@ namespace Boostana
 
         private static void OnCombo()
         {
+            var enemiesr = EntityManager.Heroes.Enemies.OrderByDescending
+                (a => a.HealthPercent).Where(a => !a.IsMe && a.IsValidTarget() && a.Distance(Player) <= R.Range);
+            var enemiesw = EntityManager.Heroes.Enemies.OrderByDescending
+                (a => a.HealthPercent).Where(a => !a.IsMe && a.IsValidTarget() && a.Distance(Player) <= W.Range);
+            var enemies = EntityManager.Heroes.Enemies.OrderByDescending
+                (a => a.HealthPercent).Where(a => !a.IsMe && a.IsValidTarget() && a.Distance(Player) <= E.Range);
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
             var targetBoom =
                 EntityManager.Heroes.Enemies.FirstOrDefault(
@@ -647,19 +653,31 @@ namespace Boostana
             {
                 return;
             }
-            if (TristanaMenu.ComboE() && E.IsReady() && target.IsValidTarget(E.Range))
-            {
-                E.Cast(target);
-            }
+            if (E.IsReady() && target.IsValidTarget(E.Range))
+                foreach (var eenemies in enemies)
+                {
+                    var useR = TristanaMenu.MyCombo["combo.e"
+                        + eenemies.ChampionName].Cast<CheckBox>().CurrentValue;
+                    if (useR)
+                    {
+                        R.Cast(eenemies);
+                    }
+                }
             if (TristanaMenu.ComboQ() && Q.IsReady() && target.IsValidTarget(Q.Range))
             {
                 Q.Cast();
             }
-            if (TristanaMenu.ComboW() && W.IsReady() && target.IsValidTarget(W.Range) &&
+            if (W.IsReady() && target.IsValidTarget(W.Range) &&
                 target.Position.CountEnemiesInRange(800) <= TristanaMenu.ComboW1() )
-            {
-                W.Cast(target.ServerPosition);
-            }
+                foreach (var jumpenemies in enemiesw)
+                {
+                    var useW = TristanaMenu.MyCombo["combo.w"
+                        + jumpenemies.ChampionName].Cast<CheckBox>().CurrentValue;
+                    if (useW)
+                    {
+                        W.Cast(jumpenemies.ServerPosition);
+                    }
+                }
 
             if (targetBoom != null)
                 if (TristanaMenu.ComboEr() && !E.IsReady() && R.IsReady() && targetBoom.IsValidTarget(R.Range) &&
@@ -672,12 +690,18 @@ namespace Boostana
                     R.Cast(targetBoom);
                 }
 
-            if (R.IsReady() && TristanaMenu.ComboR() && target.IsValidTarget(R.Range) &&
+            if (R.IsReady() && target.IsValidTarget(R.Range) &&
                 target.Health + target.AttackShield + TristanaMenu.ComboR1() <
                 Player.GetSpellDamage(target, SpellSlot.R))
-            {
-                R.Cast(target);
-            }
+                foreach (var ultenemies in enemiesr)
+                {
+                    var useR = TristanaMenu.MyCombo["combo.r" 
+                        + ultenemies.ChampionName].Cast<CheckBox>().CurrentValue;
+                        if (useR)
+                        {
+                            R.Cast(ultenemies);
+                        }
+                }
 
             if ((ObjectManager.Player.CountEnemiesInRange(ObjectManager.Player.AttackRange) >=
                  TristanaMenu.YoumusEnemies() || Player.HealthPercent >= TristanaMenu.ItemsYoumuShp()) &&
