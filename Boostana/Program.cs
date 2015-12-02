@@ -163,7 +163,6 @@ namespace Boostana
                 Heal();
             if (MyActivator.Ignite != null)
                 Ignite();
-            Player.SetSkinId(TristanaMenu.SkinId());
         }
 
         private static void LevelUpSpells()
@@ -264,6 +263,7 @@ namespace Boostana
             }
             KillSteal();
             AutoE();
+            Player.SetSkinId(TristanaMenu.SkinId());
             if (TristanaMenu.SpellsPotionsCheck() && !Player.IsInShopRange() && Player.HealthPercent <= TristanaMenu.SpellsPotionsHP() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
             {
                 if (MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
