@@ -656,11 +656,11 @@ namespace Boostana
             if (E.IsReady() && target.IsValidTarget(E.Range))
                 foreach (var eenemies in enemies)
                 {
-                    var useR = TristanaMenu.MyCombo["combo.e"
+                    var useE = TristanaMenu.MyCombo["combo.e"
                         + eenemies.ChampionName].Cast<CheckBox>().CurrentValue;
-                    if (useR)
+                    if (useE)
                     {
-                        R.Cast(eenemies);
+                        E.Cast(eenemies);
                     }
                 }
             if (TristanaMenu.ComboQ() && Q.IsReady() && target.IsValidTarget(Q.Range))
