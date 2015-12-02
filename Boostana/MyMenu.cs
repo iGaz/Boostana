@@ -1,3 +1,5 @@
+using System.Linq;
+using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 
@@ -60,12 +62,21 @@ namespace Boostana
             MyCombo.AddGroupLabel("Combo settings:");
             MyCombo.Add("combo.Q", 
                 new CheckBox("Use Rapid Fire (Q Spell)"));
-            MyCombo.Add("combo.W", 
-                new CheckBox("Use Rocket Jump (W Spell)", false));
-            MyCombo.Add("combo.E", 
-                new CheckBox("Use Explosive Charge (E Spell)"));
-            MyCombo.Add("combo.R", 
-                new CheckBox("Use Buster Shot (R Spell)"));
+            MyCombo.AddLabel("Use Rocket Jump (W Spell) on");
+            foreach (var enemies in EntityManager.Heroes.Enemies.Where(i => !i.IsMe))
+            {
+                MyCombo.Add("combo.w" + enemies.ChampionName, new CheckBox("" + enemies.ChampionName, false));
+            }
+            MyCombo.AddLabel("Use Explosive Charge (E Spell) on");
+            foreach (var enemies in EntityManager.Heroes.Enemies.Where(i => !i.IsMe))
+            {
+                MyCombo.Add("combo.e" + enemies.ChampionName, new CheckBox("" + enemies.ChampionName));
+            }
+            MyCombo.AddLabel("Use Buster Shot (R Spell) on");
+            foreach (var enemies in EntityManager.Heroes.Enemies.Where(i => !i.IsMe))
+            {
+                MyCombo.Add("combo.r" + enemies.ChampionName, new CheckBox("" + enemies.ChampionName));
+            }
             MyCombo.AddSeparator();
             MyCombo.AddGroupLabel("Combo preferences:");
             MyCombo.Add("combo.CC", 
@@ -83,8 +94,6 @@ namespace Boostana
                 new Slider("Insec Postion Mode", 2, 0, 2));
             MyCombo.Add("insecDistancee", 
                 new Slider("Insec Distance", 200, 100, 350));
-            MyCombo.Add("combo.W3", 
-                new Slider("Rocket Jump Overkill", 50, 0, 500));
             MyCombo.AddSeparator();
             MyCombo.Add("combo.WR",
                 new KeyBind("Use Rocket Jump + Buster Shot for Insec", false, KeyBind.BindTypes.HoldActive, 92));
@@ -151,7 +160,7 @@ namespace Boostana
         private static void MyActivatorPage()
         {
             MyActivator = MyMenu.AddSubMenu("Activator Settings", "Items");
-            MyActivator.AddGroupLabel("Auto QSS :");
+            MyActivator.AddGroupLabel("Auto QSS if :");
             MyActivator.Add("Blind",
                 new CheckBox("Blind", false));
             MyActivator.Add("Charm",
@@ -170,6 +179,7 @@ namespace Boostana
                 new CheckBox("Taunt"));
             MyActivator.Add("Suppression",
                 new CheckBox("Suppression"));
+            MyActivator.AddGroupLabel("Ults");
             MyActivator.Add("ZedUlt", 
                 new CheckBox("Zed Ult"));
             MyActivator.Add("VladUlt",
@@ -281,24 +291,9 @@ namespace Boostana
             return MyCombo["combo.Q"].Cast<CheckBox>().CurrentValue;
         }
 
-        public static bool ComboW()
-        {
-            return MyCombo["combo.W"].Cast<CheckBox>().CurrentValue;
-        }
-
         public static float ComboW1()
         {
             return MyCombo["combo.W1"].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool ComboE()
-        {
-            return MyCombo["combo.E"].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static bool ComboR()
-        {
-            return MyCombo["combo.R"].Cast<CheckBox>().CurrentValue;
         }
 
         public static float ComboR1()
@@ -314,11 +309,6 @@ namespace Boostana
         public static float ComboEr1()
         {
             return MyCombo["combo.ER1"].Cast<Slider>().CurrentValue;
-        }
-
-        public static float ComboW3()
-        {
-            return MyCombo["combo.W3"].Cast<Slider>().CurrentValue;
         }
 
         public static bool LcQ()
