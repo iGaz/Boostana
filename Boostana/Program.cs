@@ -17,7 +17,7 @@ namespace Boostana
     {
         //Here we type the version of the file, More comments = More visibility for MrArticuno fappa
         //The string version is called in MyMenu Class where we type Program.Version 
-        public static string Version = "2.0.0.2"; 
+        public static string Version = "2.0.0.1"; 
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         private static int[] AbilitySequence;
@@ -163,6 +163,8 @@ namespace Boostana
                 Heal();
             if (MyActivator.Ignite != null)
                 Ignite();
+            if (TristanaMenu.checkSkin() != null)
+            Player.SetSkinId(TristanaMenu.SkinId());
         }
 
         private static void LevelUpSpells()
@@ -263,7 +265,6 @@ namespace Boostana
             }
             KillSteal();
             AutoE();
-            Player.SetSkinId(TristanaMenu.SkinId());
             if (TristanaMenu.SpellsPotionsCheck() && !Player.IsInShopRange() && Player.HealthPercent <= TristanaMenu.SpellsPotionsHP() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
             {
                 if (MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
@@ -585,7 +586,7 @@ namespace Boostana
                 Player.ManaPercent >= TristanaMenu.LcM())
             {
                 E.Cast(tawah);
-
+                Q.Cast();
             }
 
             if (TristanaMenu.LcQ() && tawah.IsInRange(Player, Q.Range) && Q.IsReady() &&
