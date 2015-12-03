@@ -163,8 +163,10 @@ namespace Boostana
                 Heal();
             if (MyActivator.Ignite != null)
                 Ignite();
-            if (TristanaMenu.checkSkin() != null)
+            if (TristanaMenu.checkSkin())
+            {
             Player.SetSkinId(TristanaMenu.SkinId());
+            }
         }
 
         private static void LevelUpSpells()
