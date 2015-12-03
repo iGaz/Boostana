@@ -252,6 +252,8 @@ namespace Boostana
                 new CheckBox("Auto Level Up Spells:", false));
             MyOtherFunctions.AddSeparator();
             MyOtherFunctions.AddGroupLabel("Skin settings");
+            MyOtherFunctions.Add("checkSkin",
+                new CheckBox("Use skin changer:"));
             MyOtherFunctions.Add("skin.Id", 
                 new Slider("Skin Editor", 3, 1, 6));
         }
@@ -550,6 +552,12 @@ namespace Boostana
         {
             return MyOtherFunctions["flee.HP"].Cast<Slider>().CurrentValue;
         }
+
+        public static bool checkSkin()
+        {
+            return MyOtherFunctions["checkSkin"].Cast<CheckBox>().CurrentValue;
+        }
+
 
     }
 }
