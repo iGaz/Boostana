@@ -255,7 +255,7 @@ namespace Boostana
             MyOtherFunctions.Add("checkSkin",
                 new CheckBox("Use skin changer:"));
             MyOtherFunctions.Add("skin.Id", 
-                new Slider("Skin Editor", 3, 0, 8));
+                new Slider("Skin Editor", 5, 0, 11));
         }
 
         public static bool Nodraw()
