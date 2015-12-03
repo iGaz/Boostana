@@ -17,7 +17,7 @@ namespace Boostana
     {
         //Here we type the version of the file, More comments = More visibility for MrArticuno fappa
         //The string version is called in MyMenu Class where we type Program.Version 
-        public static string Version = "2.0.0.1"; 
+        public static string Version = "2.0.0.2"; 
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         private static int[] AbilitySequence;
@@ -667,7 +667,7 @@ namespace Boostana
             {
                 Q.Cast();
             }
-            if (W.IsReady() && target.IsValidTarget(W.Range) &&
+            if (W.IsReady() && target.IsValidTarget(W.Range) && !target.IsInvulnerable &&
                 target.Position.CountEnemiesInRange(800) <= TristanaMenu.ComboW1() )
                 foreach (var jumpenemies in enemiesw)
                 {
@@ -680,7 +680,7 @@ namespace Boostana
                 }
 
             if (targetBoom != null)
-                if (TristanaMenu.ComboEr() && !E.IsReady() && R.IsReady() && targetBoom.IsValidTarget(R.Range) &&
+                if (TristanaMenu.ComboEr() && !E.IsReady() && R.IsReady() && targetBoom.IsValidTarget(R.Range) && !targetBoom.IsInvulnerable &&
                     (targetBoom.Health + targetBoom.AllShield + TristanaMenu.ComboEr1()) -
                     (Player.GetSpellDamage(targetBoom, SpellSlot.E) +
                      (targetBoom.Buffs.Find(a => a.Name == "tristanaecharge").Count *
@@ -690,7 +690,7 @@ namespace Boostana
                     R.Cast(targetBoom);
                 }
 
-            if (R.IsReady() && target.IsValidTarget(R.Range) &&
+            if (R.IsReady() && target.IsValidTarget(R.Range) && !target.IsInvulnerable &&
                 target.Health + target.AttackShield + TristanaMenu.ComboR1() <
                 Player.GetSpellDamage(target, SpellSlot.R))
                 foreach (var ultenemies in enemiesr)
