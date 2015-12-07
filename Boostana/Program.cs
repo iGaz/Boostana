@@ -508,7 +508,7 @@ namespace Boostana
                         a =>
                             !a.IsDead &&
                             a.Distance(target2) <= 775 + Player.BoundingRadius + (target2.BoundingRadius / 2) + 44.2);
-                var useWR = TristanaMenu.MyCombo["killsteal.WR"
+                var useWR = TristanaMenu.MyHarass["killsteal.WR"
                     + target2.ChampionName].Cast<CheckBox>().CurrentValue;
                 if (useWR && TristanaMenu.KillstealR() && R.IsReady() &&
                     target2.Health + target2.AttackShield <
