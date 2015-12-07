@@ -17,7 +17,7 @@ namespace Boostana
     {
         //Here we type the version of the file, More comments = More visibility for MrArticuno fappa
         //The string version is called in MyMenu Class where we type Program.Version 
-        public static string Version = "2.0.0.3"; 
+        public static string Version = "2.0.0.4"; 
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         private static int[] AbilitySequence;
@@ -497,25 +497,28 @@ namespace Boostana
 
         private static void KillSteal()
         {
+            var enemies = EntityManager.Heroes.Enemies.OrderByDescending
+                (a => a.HealthPercent).Where(a => !a.IsMe && a.IsValidTarget() && a.Distance(Player) <= R.Range && !a.IsDead && !a.IsZombie && a.HealthPercent <= 25);
             foreach (
                 var target2 in
-                    EntityManager.Heroes.Enemies.Where(
-                        hero =>
-                            hero.IsValidTarget(W.Range) && !hero.IsDead && !hero.IsZombie && hero.HealthPercent <= 25))
+                   enemies)
             {
                 var tawah =
                     EntityManager.Turrets.Enemies.FirstOrDefault(
                         a =>
                             !a.IsDead &&
                             a.Distance(target2) <= 775 + Player.BoundingRadius + (target2.BoundingRadius / 2) + 44.2);
-                if (TristanaMenu.KillstealR() && R.IsReady() &&
+                var useWR = TristanaMenu.MyCombo["killsteal.WR"
+                    + target2.ChampionName].Cast<CheckBox>().CurrentValue;
+                if (useWR && TristanaMenu.KillstealR() && R.IsReady() &&
                     target2.Health + target2.AttackShield <
-                    Player.GetSpellDamage(target2, SpellSlot.R))
-                {
-                    R.Cast(target2);
-                }
+                    Player.GetSpellDamage(target2, SpellSlot.R) && !target2.HasBuff("tristanaecharge"))
 
-                if (TristanaMenu.KillstealW() && W.IsReady() &&
+                    {
+                    R.Cast(target2);
+                    }
+
+                if (useWR && TristanaMenu.KillstealW() && W.IsReady() &&
                     target2.Health + target2.AttackShield <
                     Player.GetSpellDamage(target2, SpellSlot.W) &&
                     target2.Position.CountEnemiesInRange(800) == 1 && tawah == null && Player.Mana >= 120)
@@ -523,7 +526,8 @@ namespace Boostana
                     W.Cast(target2.Position);
                 }
             }
-        }
+
+            }
 
         private static void AutoE()
         {
@@ -621,17 +625,24 @@ namespace Boostana
 
         private static void OnHarrass()
         {
+            var enemies = EntityManager.Heroes.Enemies.OrderByDescending
+                (a => a.HealthPercent).Where(a => !a.IsMe && a.IsValidTarget() && a.Distance(Player) <= E.Range);
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
             if (!target.IsValidTarget())
             {
                 return;
             }
 
-            if (TristanaMenu.HarassE() && E.IsReady() && target.IsValidTarget(E.Range) &&
-                Player.ManaPercent >= TristanaMenu.HarassQe())
-            {
-                E.Cast(target);
-            }
+            if (E.IsReady() && target.IsValidTarget(E.Range))
+                 foreach (var eenemies in enemies)
+                {
+                    var useE = TristanaMenu.MyCombo["harass.E"
+                        + eenemies.ChampionName].Cast<CheckBox>().CurrentValue;
+                    if (useE)
+                    {
+                        E.Cast(eenemies);
+                    }
+                }
 
             if (TristanaMenu.HarassQ() && target.IsValidTarget(Q.Range) && Player.ManaPercent >= TristanaMenu.HarassQe() &&
                 target.GetBuffCount("tristanaecharge") > 0)
@@ -676,9 +687,9 @@ namespace Boostana
                 {
                     var useW = TristanaMenu.MyCombo["combo.w"
                         + jumpenemies.ChampionName].Cast<CheckBox>().CurrentValue;
-                    if (useW)
+                    if (useW && W.GetPrediction(jumpenemies).HitChancePercent >= TristanaMenu.ComboWH())
                     {
-                        W.Cast(jumpenemies.ServerPosition);
+                        W.Cast(W.GetPrediction(jumpenemies).CastPosition);
                     }
                 }
 
