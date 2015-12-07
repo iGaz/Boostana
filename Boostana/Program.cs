@@ -244,7 +244,7 @@ namespace Boostana
 
         private static void Heal()
         {
-            if (MyActivator.Heal.IsReady() && Player.HealthPercent <= TristanaMenu.SpellsHealHp())
+            if (Player.IsFacing(Target) && MyActivator.Heal.IsReady() && Player.HealthPercent <= TristanaMenu.SpellsHealHp())
                 MyActivator.Heal.Cast();
         }
 
