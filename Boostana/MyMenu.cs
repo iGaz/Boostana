@@ -67,6 +67,7 @@ namespace Boostana
             {
                 MyCombo.Add("combo.w" + enemies.ChampionName, new CheckBox("" + enemies.ChampionName, false));
             }
+            MyCombo.Add("combo.wh", new Slider("Set your prediction value", 70));
             MyCombo.AddLabel("Use Explosive Charge (E Spell) on");
             foreach (var enemies in EntityManager.Heroes.Enemies.Where(i => !i.IsMe))
             {
@@ -141,9 +142,12 @@ namespace Boostana
             MyHarass.AddGroupLabel("Harass Settings:");
             MyHarass.AddSeparator();
             MyHarass.Add("harass.Q", 
-                new CheckBox("Use Rapid Fire (Q Spell)", false));
-            MyHarass.Add("harass.E", 
-                new CheckBox("Use Explosive Charge (E Spell)", false));
+                new CheckBox("Use Rapid Fire (Q Spell)"));
+            MyHarass.AddLabel("Use Explosive Charge (E Spell) on");
+            foreach (var enemies in EntityManager.Heroes.Enemies.Where(i => !i.IsMe))
+            {
+                MyHarass.Add("harass.E" + enemies.ChampionName, new CheckBox("" + enemies.ChampionName));
+            }
             MyHarass.Add("harass.QE", 
                 new Slider("Min. Mana for Harass Spells %", 35));
             MyHarass.AddSeparator();
@@ -152,6 +156,11 @@ namespace Boostana
                 new CheckBox("Use Rocket Jump (W Spell)", false));
             MyHarass.Add("killsteal.R", 
                 new CheckBox("Use Buster Shot (R Spell)"));
+            MyHarass.AddLabel("Use KillSteal spells on");
+            foreach (var enemies in EntityManager.Heroes.Enemies.Where(i => !i.IsMe))
+            {
+                MyHarass.Add("killsteal.WR" + enemies.ChampionName, new CheckBox("" + enemies.ChampionName));
+            }
             MyHarass.AddSeparator();
             MyHarass.AddGroupLabel("Pro Tips");
             MyHarass.AddLabel(" -Remember to play safe and don't be a teemo");
@@ -297,6 +306,10 @@ namespace Boostana
         {
             return MyCombo["combo.W1"].Cast<Slider>().CurrentValue;
         }
+        public static float ComboWH()
+        {
+            return MyCombo["combo.wh"].Cast<Slider>().CurrentValue;
+        }
 
         public static float ComboR1()
         {
@@ -361,11 +374,6 @@ namespace Boostana
         public static bool HarassQ()
         {
             return MyHarass["harass.Q"].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static bool HarassE()
-        {
-            return MyHarass["harass.E"].Cast<CheckBox>().CurrentValue;
         }
 
         public static float HarassQe()
