@@ -68,9 +68,9 @@ namespace Boostana
             //Using Chat.Print helps you to write this, you can also choose how to type it with Color.Red like Annie bad days
             Chat.Print("Boostana Loaded!", Color.CornflowerBlue);
             Chat.Print("Enjoy the game and DONT FLAME!", Color.Red);
-            wardLocation = new WardLocation();
             //We start to load every single thing we need for let the addon works properly or every file we have separately to this
             TristanaMenu.LoadMenu();
+            wardLocation = new WardLocation();
             Game.OnTick += GameOnTick;
             MyActivator.LoadSpells();
             Game.OnUpdate += OnGameUpdate;
