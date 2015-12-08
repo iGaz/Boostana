@@ -440,7 +440,7 @@ namespace Boostana
         }
         public static bool pinkWard()
         {
-            return MyActivator["pinkward"].Cast<CheckBox>().CurrentValue;
+            return MyActivator["pinkvision"].Cast<CheckBox>().CurrentValue;
         }
         public static bool greaterStealthTotem()
         {
