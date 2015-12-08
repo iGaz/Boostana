@@ -21,6 +21,7 @@ namespace Boostana
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         private static int[] AbilitySequence;
+        private static WardLocation wardLocation;
         //Now we set every spell like Q-W-E-R
         //Q is an active spell (Let tristana attack speed goes 12938561281273x)
         private static Spell.Active Q;
@@ -30,6 +31,7 @@ namespace Boostana
         private static Spell.Targeted E;
         //R is also a Targeted spell, Like E or Ignite, we have to KABUUUUUUUUUUUUM the enemy
         private static Spell.Targeted R;
+        private static int time;
         //This works for find the Ally (Koka function but he is so nob for let insec works then we will check it)
         private static Obj_AI_Base AllyTarget;
         //This works for find the target (Koka function but he is so nob for let insec works then we will check it)
@@ -66,6 +68,7 @@ namespace Boostana
             //Using Chat.Print helps you to write this, you can also choose how to type it with Color.Red like Annie bad days
             Chat.Print("Boostana Loaded!", Color.CornflowerBlue);
             Chat.Print("Enjoy the game and DONT FLAME!", Color.Red);
+            wardLocation = new WardLocation();
             //We start to load every single thing we need for let the addon works properly or every file we have separately to this
             TristanaMenu.LoadMenu();
             Game.OnTick += GameOnTick;
@@ -133,6 +136,13 @@ namespace Boostana
                 {
                     new Circle { Color = Color.SkyBlue, Radius = R.Range, BorderWidth = 2f }.Draw(Player.Position);
                 }
+                if (TristanaMenu.DrawingsT() && wardLocation.Normal.Any())
+                {
+                    foreach (var place in wardLocation.Normal.Where(pos => pos.Distance(ObjectManager.Player.Position) <= 1500))
+                    {
+                        Drawing.DrawCircle(place, 100, IsWarded(place) ? Color.Red : Color.Green);
+                    }
+                }
             }
             else
             {
@@ -151,6 +161,13 @@ namespace Boostana
                 if (!R.IsOnCooldown && TristanaMenu.DrawingsR())
                 {
                     new Circle { Color = Color.SkyBlue, Radius = 500, BorderWidth = 2f }.Draw(Player.Position);
+                }
+                if (TristanaMenu.DrawingsT() && wardLocation.Normal.Any())
+                {
+                    foreach (var place in wardLocation.Normal.Where(pos => pos.Distance(ObjectManager.Player.Position) <= 1500))
+                    {
+                        Drawing.DrawCircle(place, 100, IsWarded(place) ? Color.Red : Color.Green);
+                    }
                 }
             }
         }
@@ -267,7 +284,52 @@ namespace Boostana
             }
             KillSteal();
             AutoE();
-            if (TristanaMenu.SpellsPotionsCheck() && !Player.IsInShopRange() && Player.HealthPercent <= TristanaMenu.SpellsPotionsHP() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
+            AutoPotions();
+            AutoWard();
+        }
+
+        private static void AutoWard()
+        {
+            if (TristanaMenu.checkWard())
+            {
+                foreach (var place in wardLocation.Normal.Where(pos => pos.Distance(ObjectManager.Player.Position) <= 1000))
+                {
+                    if (MyActivator.WardingTotem.IsOwned() && MyActivator.WardingTotem.IsReady() && TristanaMenu.wardingTotem() && !IsWarded(place))
+                    {
+                        MyActivator.WardingTotem.Cast(place);
+                        time = Environment.TickCount + 5000;
+                    }
+                    if (MyActivator.GreaterStealthTotem.IsOwned() && MyActivator.GreaterStealthTotem.IsReady() && TristanaMenu.greaterStealthTotem() &&!IsWarded(place) && (Environment.TickCount > time))
+                    {
+                        MyActivator.GreaterStealthTotem.Cast(place);
+                        time = Environment.TickCount + 5000;
+                    }
+                    if (MyActivator.GreaterVisionTotem.IsOwned() && MyActivator.GreaterVisionTotem.IsReady() && TristanaMenu.greaterVisionTotem() && !IsWarded(place) && (Environment.TickCount > time))
+                    {
+                        MyActivator.GreaterVisionTotem.Cast(place);
+                        time = Environment.TickCount + 5000;
+                    }
+                    if (MyActivator.FarsightAlteration.IsOwned() && MyActivator.FarsightAlteration.IsReady() && TristanaMenu.farsightAlteration() && !IsWarded(place) && (Environment.TickCount > time))
+                    {
+                        MyActivator.FarsightAlteration.Cast(place);
+                        time = Environment.TickCount + 5000;
+                    }
+                    if (MyActivator.PinkVision.IsOwned() && MyActivator.PinkVision.IsReady() && TristanaMenu.pinkWard() && !IsWarded(place) && (Environment.TickCount > time))
+                    {
+                        MyActivator.PinkVision.Cast(place);
+                        time = Environment.TickCount + 5000;
+                    }
+                }
+            }
+        }
+
+        private static void AutoPotions()
+        {
+            if (TristanaMenu.SpellsPotionsCheck() && !Player.IsInShopRange() &&
+                Player.HealthPercent <= TristanaMenu.SpellsPotionsHP() &&
+                !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") ||
+                  Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") ||
+                  Player.HasBuff("ItemDarkCrystalFlask")))
             {
                 if (MyActivator.HuntersPot.IsReady() && MyActivator.HuntersPot.IsOwned())
                 {
@@ -290,14 +352,19 @@ namespace Boostana
                     MyActivator.RefillPot.Cast();
                 }
             }
-            if (TristanaMenu.SpellsPotionsCheck() && !Player.IsInShopRange() && Player.ManaPercent <= TristanaMenu.SpellsPotionsM() && !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") || Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") || Player.HasBuff("ItemDarkCrystalFlask")))
+            if (TristanaMenu.SpellsPotionsCheck() && !Player.IsInShopRange() &&
+                Player.ManaPercent <= TristanaMenu.SpellsPotionsM() &&
+                !(Player.HasBuff("RegenerationPotion") || Player.HasBuff("ItemCrystalFlaskJungle") ||
+                  Player.HasBuff("ItemMiniRegenPotion") || Player.HasBuff("ItemCrystalFlask") ||
+                  Player.HasBuff("ItemDarkCrystalFlask")))
             {
                 if (MyActivator.CorruptPot.IsReady() && MyActivator.CorruptPot.IsOwned())
                 {
                     MyActivator.CorruptPot.Cast();
-                } 
+                }
             }
         }
+
         private static void OnBuffGain(Obj_AI_Base sender, Obj_AI_BaseBuffGainEventArgs args)
         {
             if (!sender.IsMe) return;
@@ -384,6 +451,10 @@ namespace Boostana
             }
         }
 
+        private static bool IsWarded(Vector3 position)
+        {
+            return ObjectManager.Get<Obj_AI_Base>().Any(obj => obj.IsWard() && obj.Distance(position) <= 200);
+        }
         private static Vector3 InterceptionPoint(List<Obj_AI_Base> heroes)
         {
             var result = new Vector3();
