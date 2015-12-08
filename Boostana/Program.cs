@@ -17,7 +17,7 @@ namespace Boostana
     {
         //Here we type the version of the file, More comments = More visibility for MrArticuno fappa
         //The string version is called in MyMenu Class where we type Program.Version 
-        public static string Version = "2.0.0.4"; 
+        public static string Version = "2.0.0.5"; 
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         private static int[] AbilitySequence;
