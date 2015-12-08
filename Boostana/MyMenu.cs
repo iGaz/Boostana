@@ -51,6 +51,8 @@ namespace Boostana
                 new CheckBox("Draw Explosive Charge Range (E Spell)"));
             MyDraw.Add("draw.R", 
                 new CheckBox("Draw Buster Shot Range (R Spell)"));
+            MyDraw.Add("draw.T",
+                new CheckBox("Draw Wards Position"));
             MyDraw.AddSeparator();
             MyDraw.AddGroupLabel("Pro Tips");
             MyDraw.AddLabel(" - Uncheck the boxeses if you wish to dont see a specific draw");
@@ -201,6 +203,19 @@ namespace Boostana
                 new CheckBox("Poppy Ult"));
             MyActivator.AddGroupLabel("Items usage:");
             MyActivator.AddSeparator();
+            MyActivator.Add("checkward",
+                new CheckBox("Use AutoWard"));
+            MyActivator.Add("pinkvision",
+                new CheckBox("Use Pink Ward"));
+            MyActivator.Add("greatherstealthtotem",
+                new CheckBox("Use Greather Stealth Totem"));
+            MyActivator.Add("greatervisiontotem",
+                new CheckBox("Use Greater Vision Totem"));
+            MyActivator.Add("wardingtotem",
+                new CheckBox("Use Warding Totem"));
+            MyActivator.Add("farsightalteration",
+                new CheckBox("Use Farsight Alteration"));
+            MyActivator.AddSeparator();
             MyActivator.Add("bilgewater", 
                 new CheckBox("Use Bilgewater Cutlass"));
             MyActivator.Add("bilgewater.HP", 
@@ -295,6 +310,10 @@ namespace Boostana
         public static bool DrawingsR()
         {
             return MyDraw["draw.R"].Cast<CheckBox>().CurrentValue;
+        }
+        public static bool DrawingsT()
+        {
+            return MyDraw["draw.T"].Cast<CheckBox>().CurrentValue;
         }
 
         public static bool ComboQ()
@@ -414,6 +433,30 @@ namespace Boostana
         public static bool Youmus()
         {
             return MyActivator["youmus"].Cast<CheckBox>().CurrentValue;
+        }
+        public static bool checkWard()
+        {
+            return MyActivator["checkward"].Cast<CheckBox>().CurrentValue;
+        }
+        public static bool pinkWard()
+        {
+            return MyActivator["pinkward"].Cast<CheckBox>().CurrentValue;
+        }
+        public static bool greaterStealthTotem()
+        {
+            return MyActivator["greaterstealthtotem"].Cast<CheckBox>().CurrentValue;
+        }
+        public static bool greaterVisionTotem()
+        {
+            return MyActivator["greatervisiontotem"].Cast<CheckBox>().CurrentValue;
+        }
+        public static bool farsightAlteration()
+        {
+            return MyActivator["farsightalteration"].Cast<CheckBox>().CurrentValue;
+        }
+        public static bool wardingTotem()
+        {
+            return MyActivator["wardingtotem"].Cast<CheckBox>().CurrentValue;
         }
 
         public static float YoumusEnemies()
