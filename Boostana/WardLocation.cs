@@ -21,8 +21,6 @@ namespace Boostana
         }
         private void CreateTables()
         {
-            if (Game.MapId == GameMapId.SummonersRift)
-            {
                 if (TristanaMenu.checkWard())
                 {
                     Normal.Add(new Vector3(9918f, 6538f, 33.13258f));
@@ -50,4 +48,3 @@ namespace Boostana
             }
         }
     }
-}
